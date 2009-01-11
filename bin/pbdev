@@ -6,8 +6,9 @@ require 'trollop'
 begin
   require 'pbdev'
 rescue LoadError
-  $: << '../lib'
-  require '../lib/pbdev.rb'
+  # special case for my development machine, where I have this file on path and no pbdev gem installed
+  $: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
+  require 'pbdev'
 end
 
 include PBDev
