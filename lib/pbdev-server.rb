@@ -58,7 +58,7 @@ get '/:kind/:author/:name/*' do
 
   begin 
     resource_path = File.join(workspace, kind, author, name)
-    checkout = klass.new(resource_path, File.join(workspace, "temp"), "#{kind}/#{name}")
+    checkout = klass.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
   rescue NoSuchPathError
     if name.index("-") then
       # try without prefix
@@ -69,7 +69,7 @@ get '/:kind/:author/:name/*' do
     end
     begin
       resource_path = File.join(workspace, kind, author, name)
-      checkout = klass.new(resource_path, File.join(workspace, "temp"), "#{kind}/#{name}")
+      checkout = klass.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
     rescue NoSuchPathError
       puts "Resource is missing: #{resource_path}"
       throw :halt, [404, 'file not found']
