@@ -17,7 +17,7 @@ module PBDev
   # mapping their source paths, destination paths, and urls.
   class BundleManifest
 
-    CACHED_TYPES    = [:javascript, :stylesheet, :template]
+    CACHED_TYPES    = [:javascript, :stylesheet, :template, :html]
     SYMLINKED_TYPES = []
 
     NORMALIZED_TYPE_EXTENSIONS = {
@@ -62,14 +62,6 @@ module PBDev
       @entries_by_filename.to_yaml
     end
 
-    def combine_javascript?
-      true
-    end
-
-    def combine_stylesheets?
-      true
-    end
-
     protected
 
     def build!
@@ -86,27 +78,27 @@ module PBDev
         end
       end
 
-      hide_composite = self.combine_javascript?
       if (working = entries[:javascript]) && working.size>0
-        entry = build_entry_for('baked_index.js', :javascript, working, hide_composite)
+        entry = build_entry_for('baked_index.js', :javascript, working, true)
         setup_timestamp_token(entry) if self.build_mode == :development
-        entry.hidden = true unless hide_composite
         working << entry
       end
 
-      hide_composite = self.combine_stylesheets?
       if (working = entries[:stylesheet]) && working.size>0
-        entry = build_entry_for('baked_index.css', :stylesheet, working, hide_composite)
+        entry = build_entry_for('baked_index.css', :stylesheet, working, true)
         setup_timestamp_token(entry) if self.build_mode == :development
-        entry.hidden = true unless hide_composite
         working << entry
       end
 
-      hide_composite = self.combine_stylesheets?
       if (working = entries[:template]) && working.size>0
-        entry = build_entry_for('baked_index.tpl', :template, working, hide_composite)
+        entry = build_entry_for('baked_index.tpl', :template, working, true)
         setup_timestamp_token(entry) if self.build_mode == :development
-        entry.hidden = true unless hide_composite
+        working << entry
+      end
+
+      if (working = entries[:html]) && working.size>0
+        entry = build_entry_for('baked_index.html', :html, working, true)
+        setup_timestamp_token(entry) if self.build_mode == :development
         working << entry
       end
 
@@ -141,6 +133,8 @@ module PBDev
       when /\.html.erb$/
         :html
       when /\.haml$/
+        :html
+      when /\.html$/
         :html
       when /\.css$/
         :stylesheet

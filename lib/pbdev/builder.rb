@@ -62,6 +62,7 @@ module PBDev
     end
 
     def rewrite_inline_code(line, filename)
+      # TODO: support static_url in the future
       #      line.gsub(/static_url\([\'\"](.+?)[\'\"]\)/) do | rsrc |
       #        entry = bundle.find_resource_entry($1, :language => language)
       #        static_url(entry.nil? ? '' : entry.cacheable_url)
@@ -157,9 +158,10 @@ module PBDev
       end
 
       result = ""
-      result += "Hed.widgets['__WIDGET_URL__'].prototype.css = '\\\n"
-      result += escapejs(res)
-      result += "';\n\n"
+      result << "\n\n/* " << "baked css files" << " ----------------------------------------------------- */\n\n"
+      result << "Hed.widgets['__WIDGET_URL__'].prototype.css = '\\\n"
+      result << escapejs(res)
+      result << "';\n\n"
       result
     end
 
@@ -169,15 +171,8 @@ module PBDev
       result
     end
 
-    def rewrite_inline_code(line, filename)
-      if line.match(/sc_super\(\s*\)/)
-        line = line.gsub(/sc_super\(\s*\)/, 'arguments.callee.base.apply(this,arguments)')
-      end
-      super(line, filename)
-    end
-
     def static_url(url); "'#{url}'"; end
-    def filename_for_require(ret); "#{ret}.js"; end
+    def filename_for_require(ret); "#{ret}.css"; end
   end
 
   class TemplateResourceBuilder < ResourceBuilder
@@ -203,11 +198,49 @@ module PBDev
     def filename_for_require(ret); "#{ret}.tpl"; end
   end
 
+  class HtmlResourceBuilder < ResourceBuilder
+
+    def join(lines)
+      if bundle.minify?
+        res = lines.join # TODO: minify HTML
+      else
+        res = lines.join
+      end
+
+      result = ""
+      result << "\n\n/* " << "baked html files" << " ----------------------------------------------------- */\n\n"
+      result << "Hed.widgets['__WIDGET_URL__'].prototype.html = '\\\n"
+      result << escapejs(res)
+      result << "';\n\n"
+      result
+    end
+
+    def _process_file_lines(lines, filename)
+      result = []
+      result << lines << "\n"
+      result
+    end
+
+    def static_url(url); "'#{url}'"; end
+    def filename_for_require(ret); "#{ret}.html"; end
+  end
+
   # ------------------------------------------------------------------------------------------------
   
   def self.build_template(entry, bundle)
     filenames = entry.composite? ? entry.composite_filenames : [entry.filename]
     builder = TemplateResourceBuilder.new(filenames, bundle)
+    if output = builder.build
+      FileUtils.mkdir_p(File.dirname(entry.build_path))
+      f = File.open(entry.build_path, 'w')
+      f.write(output)
+      f.close
+    end
+  end
+
+  def self.build_html(entry, bundle)
+    filenames = entry.composite? ? entry.composite_filenames : [entry.filename]
+    builder = HtmlResourceBuilder.new(filenames, bundle)
     if output = builder.build
       FileUtils.mkdir_p(File.dirname(entry.build_path))
       f = File.open(entry.build_path, 'w')
