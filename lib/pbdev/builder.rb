@@ -157,7 +157,7 @@ module PBDev
       end
 
       result = ""
-      result += "Hed.widgets['__WIDGET_URL__'].prototype.css = '"
+      result += "Hed.widgets['__WIDGET_URL__'].prototype.css = '\\\n"
       result += escapejs(res)
       result += "';\n\n"
       result
@@ -165,7 +165,7 @@ module PBDev
 
     def _process_file_lines(lines, filename)
       result = []
-      result << lines
+      result << lines << "\n"
       result
     end
 
@@ -190,7 +190,7 @@ module PBDev
       result = []
       result << "\n\n/* " << filename << " ----------------------------------------------------- */\n\n"
       sanitized_name = File.basename(filename, ".tpl").gsub(/[\*\. -!&^\(\)\[\]]/, "_")
-      result << "Hed.widgets['__WIDGET_URL__'].prototype.templates['#{sanitized_name}'] = '"
+      result << "Hed.widgets['__WIDGET_URL__'].prototype.templates['#{sanitized_name}'] = '\\\n"
       lines.each do |line|
         line.strip! if bundle.minify?
         result << escapejs(line)
