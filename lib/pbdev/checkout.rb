@@ -10,7 +10,7 @@ module PBDev
     end
     
     def serve(path)
-      false
+      File.join(@path, path)
     end
     
   end

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>PageBout dev server</title>
+  <link rel="stylesheet" href="/screen.css" type="text/css" media="screen, projection">
+  <link rel="stylesheet" href="/print.css" type="text/css" media="print"> 
+  <!--[if IE]>
+    <link rel="stylesheet" href="/ie.css" type="text/css" media="screen, projection">
+  <![endif]-->
+  <style>
+    body {
+      font-size: 140%;
+    }
+    
+    .note {
+      font-size: 80%;
+      margin: 0px;
+      position: relative;
+      top: -30px;
+      color: gray;
+    }
+    
+    .homepage {
+      margin: 0px;
+    }
+    .url {
+      margin: 0px;
+      font-weight: bold;
+    }
+    .url-note {
+      color: gray;
+      font-size: 80%;
+      margin-bottom: 40px;
+    }
+    ul {
+      margin-top: -20px;
+    }
+    .thumbnail {
+      position: relative;
+      top: 12px;
+      float: left;
+      margin-right: 20px;
+    }
+    
+  </style>
+</head>
+  <body>
+    <div class="container">
+      <div class="hd span-24">
+        <h1>PageBout dev server</h1>
+      </div>
+      <div class="bd span-24">
+        <%= yield %>
+      </div>
+      <div class="ft span-24">
+      </div>
+    </div>
+  </body>
+</html>

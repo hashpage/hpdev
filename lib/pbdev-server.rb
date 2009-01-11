@@ -4,16 +4,45 @@ require 'sinatra'
 begin
   require 'pbdev'
 rescue LoadError
-  $: << File.dirname(__FILE__)
+  $: << File.expand_path(File.dirname(__FILE__))
   require 'pbdev'
 end
 
 include PBDev
 workspace = ENV["PBDEV_WORKSPACE"]
 
-get '/:kind/:name/*' do
+get '/' do
+  erb :index
+end
+
+get '/widgets' do
+  erb :widgets1
+end
+
+get '/widgets/:author' do
+  erb :widgets2
+end
+
+get '/widgets/:author/:name' do
+  erb :widgets3
+end
+
+get '/skins' do
+  erb :skins1
+end
+
+get '/skins/:author' do
+  erb :skins2
+end
+
+get '/skins/:author/:name' do
+  erb :skins3
+end
+
+get '/:kind/:author/:name/*' do
   path = params["splat"][0]
   name = params[:name] # e.g. pbw.tabs
+  author = params[:author] # github username e.g. darwin
   kind = params[:kind] # e.g. widgets or skins
 
   case kind
@@ -28,7 +57,7 @@ get '/:kind/:name/*' do
   end
 
   begin 
-    resource_path = File.join(workspace, kind, name)
+    resource_path = File.join(workspace, kind, author, name)
     checkout = klass.new(resource_path, File.join(workspace, "temp"), "#{kind}/#{name}")
   rescue NoSuchPathError
     if name.index("-") then
@@ -39,17 +68,17 @@ get '/:kind/:name/*' do
       name = prefix + "-" + name
     end
     begin
-      resource_path = File.join(workspace, kind, name)
+      resource_path = File.join(workspace, kind, author, name)
       checkout = klass.new(resource_path, File.join(workspace, "temp"), "#{kind}/#{name}")
     rescue NoSuchPathError
       puts "Resource is missing: #{resource_path}"
-      throw :halt, [404, 'not found']
+      throw :halt, [404, 'file not found']
     end
   end
   begin
     file_path = checkout.serve(path)
   rescue IntermediateFileError
-    throw :halt, [404, 'requested intermediate resource']
+    throw :halt, [404, 'Requested intermediate resource. This resource won\'t be present on production. See index.js instead.']
   rescue ResourceNotFoundError
     throw :halt, [404, 'resource not found']
   end

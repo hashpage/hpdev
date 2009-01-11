@@ -47,19 +47,21 @@ module PBDev
     end
 
     def prepare_final(path_js, path_css, path_tpl, build_mode)
-      base = File.basename(path_js, ".js") + File.basename(path_css, ".css") + File.basename(path_tpl, ".tpl") + ".js"
+      base = "final"
+      base += File.basename(path_js, ".js") if path_js 
+      base += File.basename(path_tpl, ".tpl") if path_tpl 
+      base += File.basename(path_css, ".css") if path_css
+      base += ".js"
       final_file = File.join(@temp, base)
 
-      js_source = File.read(path_js)
-      tpl_source = File.read(path_tpl)
-      css_source = File.read(path_css)
+      js_source = File.read(path_js) if path_js
+      tpl_source = File.read(path_tpl) if path_tpl
+      css_source = File.read(path_css) if path_css
 
       File.open(final_file, "w") do |f|
-        f << replace_macros(js_source)
-        f << "\n"
-        f << replace_macros(tpl_source)
-        f << "\n"
-        f << replace_macros(css_source)
+        f << replace_macros(js_source) + "\n" if path_js
+        f << replace_macros(tpl_source) + "\n" if path_tpl
+        f << replace_macros(css_source) + "\n" if path_css
       end
 
       final_file

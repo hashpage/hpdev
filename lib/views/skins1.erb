@@ -1,0 +1,18 @@
+<%
+  skins_path = File.join(ENV["PBDEV_WORKSPACE"], "skins")
+%>
+<h2>Skin authors</h2>
+<h3>You have following skin authors on the disk:</h3>
+<p class="note">root path is <code><%= skins_path %></code></p>
+<ul>
+  <%=
+    res = ""
+    Dir.glob(skins_path+"/*").each do |file|
+      author = File.basename(file)
+      res << "<li><a href=\"/skins/#{author}\">#{author}</a></li>"
+    end
+    res
+  %>
+</ul>
+
+<p><a href="/">&larr; back to index</a></p>

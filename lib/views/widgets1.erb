@@ -1,0 +1,18 @@
+<%
+  widgets_path = File.join(ENV["PBDEV_WORKSPACE"], "widgets")
+%>
+<h2>Widget authors</h2>
+<h3>You have following widget authors on the disk:</h3>
+<p class="note">root path is <code><%= widgets_path %></code></p>
+<ul>
+  <%=
+    res = ""
+    Dir.glob(widgets_path+"/*").each do |file|
+      author = File.basename(file)
+      res << "<li><a href=\"/widgets/#{author}\">#{author}</a></li>"
+    end
+    res
+  %>
+</ul>
+
+<p><a href="/">&larr; back to index</a></p>

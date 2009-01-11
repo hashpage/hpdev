@@ -1,0 +1,24 @@
+<%
+  widgets_path = File.join(ENV["PBDEV_WORKSPACE"], "widgets", params[:author], params[:name])
+  url = "http://localhost:9876/widgets/#{params[:author]}/#{params[:name]}"
+%>
+<img class="thumbnail" src="<%= params[:name] %>/thumbnail.png">
+<h2><%= params[:author] %>/<%= params[:name] %> (widget)</h2>
+<p class="homepage">has following URL:</p>
+<p class="url"><a href="<%=url%>"><%=url%></a></p>
+<p class="url-note">Use this URL to reference this widget in PageBout.</p>
+
+<h3>I see following content of the widget on the disk:</h3>
+<p class="note">root path is <code><%= widgets_path %></code></p>
+<ul>
+  <%=
+    res = ""
+    Dir.glob(widgets_path+"/*").each do |file|
+      file = File.basename(file)
+      res << "<li><a href=\"/widgets/#{params[:author]}/#{params[:name]}/#{file}\">#{file}</a></li>"
+    end
+    res
+  %>
+</ul>
+
+<p><a href="/widgets/<%= params[:author]%>">&larr; back to widgets by <%= params[:author]%></a></p>
