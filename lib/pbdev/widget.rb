@@ -1,7 +1,28 @@
 module PBDev
   
   class WidgetRepo < Repo
-    def postprocess(path)
+    def postprocess(dir)
+      url = @url+"/"+@version
+      tempdir = File.join(dir, ".temp")
+      wc = WidgetCheckout.new(dir, tempdir, url)
+      
+      # bake index.js
+      filename = wc.serve("index.js", :production)
+      
+      Dir.chdir(dir) do
+        # remove all intermediate files
+        `rm *.js`
+        `rm *.css`
+        `rm *.tpl`
+        `rm *.html`
+        # move baked file in
+        `mv "#{filename}" index.js`
+
+        # remove temp
+        `rm -rf .temp`
+      end
+      
+      dir
     end
   end
   
@@ -13,7 +34,7 @@ module PBDev
       raise ResourceNotFoundError.new(resource_path) unless File.exists?(resource_path)
       raise IntermediateFileError.new(resource_path) if ext==".tpl" || ext==".html" || ext==".css" || (ext==".js" && basename!="index")
       return resource_path unless ext==".js" # images and other static files
-      # path is index.js
+      # the path is index.js
 
       bundle = Bundle.new(path, {
         :source_root => @path,

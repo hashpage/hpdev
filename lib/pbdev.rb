@@ -8,7 +8,7 @@ class Loggerx
   end
 
   def fatal(s)
-    puts "!"+s
+    $stderr.puts s
   end
 end
 

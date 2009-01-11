@@ -18,7 +18,7 @@ global_opts = Trollop::options do
   banner "PageBout developer tools"
   version "pbdev v0.1 (c) 2009 Antonin Hildebrand"
   stop_on SUB_COMMANDS
-  opt :author, "author of the Repo", :type => String
+  opt :url, "destination url to be written into resource", :type => String
 end
 
 cmd = ARGV.shift # get the subcommand
@@ -50,32 +50,24 @@ case cmd
     puts " -> http://localhost:9876"
     `env PBDEV_WORKSPACE=#{workspace} ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
   when "bake"
+    url = global_opts[:url] || "http://examle.com"
     source = File.expand_path(ARGV[0] || '.')
     dest = File.expand_path(ARGV[1] || '.')
     case subcmd
-      when "skin"
-        begin
-          skin = SkinRepo.new(source)
-        rescue Grit::InvalidGitRepositoryError
-          Trollop::die "Error: #{source} is not valid Git repository"
-        rescue Grit::NoSuchPathError
-          Trollop::die "Error: no such path #{source}"
-        end
-        author = global_opts[:author]||"."
-        skin.bake(dest, author)
-        puts "Skin baked into #{dest}"
-      when "widget"
-        begin
-          widget = WidgetRepo.new(source)
-        rescue Grit::InvalidGitRepositoryError
-          Trollop::die "Error: #{source} is not valid Git repository"
-        rescue Grit::NoSuchPathError
-          Trollop::die "Error: no such path #{source}"
-        end
-        author = global_opts[:author]||"."
-        widget.bake(dest, author)
-        puts "Widget baked into #{dest}"
+      when "skin" 
+        klass = SkinRepo
+      when "widget" 
+        klass = WidgetRepo
     end
+    begin
+      resource = klass.new(source, url)
+    rescue Grit::InvalidGitRepositoryError
+      Trollop::die "Error: #{source} is not valid Git repository"
+    rescue Grit::NoSuchPathError
+      Trollop::die "Error: no such path #{source}"
+    end
+    resource.bake(dest)
+    puts "Resource baked into #{dest}"
 end
 
 exit(0)
