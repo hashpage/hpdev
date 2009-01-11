@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'trollop'
+
+begin
+  require 'pbdev'
+rescue LoadError
+  $: << '../lib'
+  require '../lib/pbdev.rb'
+end
+
+include PBDev
+
+SUB_COMMANDS = %w(bake, serve)
+global_opts = Trollop::options do
+  banner "PageBout developer tools"
+  version "pbdev v0.1 (c) 2009 Antonin Hildebrand"
+  stop_on SUB_COMMANDS
+  opt :author, "author of the Repo", :type => String
+end
+
+cmd = ARGV.shift # get the subcommand
+cmd = "serve" unless cmd
+cmd_opts = case cmd
+  when "bake"
+    subcmd = ARGV.shift # get the subsubcommand
+    case subcmd
+      when "skin"
+      when "widget"
+    else
+      Trollop::die "Unknown subcommand for bake. Specify skin or widget"
+    end
+  when "serve"
+    Trollop::options do
+      opt :workspace, "workspace root for dev server", :type => String
+    end
+end
+
+# puts "Global options: #{global_opts.inspect}"
+# puts "Subcommand: #{cmd.inspect}"
+# puts "Subcommand options: #{cmd_opts.inspect}"
+# puts "Remaining arguments: #{ARGV.inspect}"
+
+case cmd
+  when "serve"
+    workspace = File.expand_path(cmd_opts[:workspace] || ".")
+    puts "PageBout dev server in  #{workspace} ..."
+    puts " -> http://localhost:9876"
+    `env PBDEV_WORKSPACE=#{workspace} ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
+  when "bake"
+    source = File.expand_path(ARGV[0] || '.')
+    dest = File.expand_path(ARGV[1] || '.')
+    case subcmd
+      when "skin"
+        begin
+          skin = SkinRepo.new(source)
+        rescue Grit::InvalidGitRepositoryError
+          Trollop::die "Error: #{source} is not valid Git repository"
+        rescue Grit::NoSuchPathError
+          Trollop::die "Error: no such path #{source}"
+        end
+        author = global_opts[:author]||"."
+        skin.bake(dest, author)
+        puts "Skin baked into #{dest}"
+      when "widget"
+        begin
+          widget = WidgetRepo.new(source)
+        rescue Grit::InvalidGitRepositoryError
+          Trollop::die "Error: #{source} is not valid Git repository"
+        rescue Grit::NoSuchPathError
+          Trollop::die "Error: no such path #{source}"
+        end
+        author = global_opts[:author]||"."
+        widget.bake(dest, author)
+        puts "Widget baked into #{dest}"
+    end
+end
+
+exit(0)
