@@ -16,7 +16,7 @@ module PBDev
     attr_reader :bundle_name
     attr_reader :javascript_libs, :stylesheet_libs
     attr_reader :source_root, :build_root, :url_root, :index_root
-    attr_reader :build_mode
+    attr_reader :build_mode, :build_kind
     attr_reader :make_resources_relative
     attr_reader :use_digest_tokens
     
@@ -26,6 +26,14 @@ module PBDev
 
     def self.build_mode=(new_mode) 
       @build_mode = new_mode
+    end
+
+    def self.build_kind
+      (@build_kind || :engine).to_sym
+    end
+
+    def self.build_kind=(new_kind) 
+      @build_kind = new_kind
     end
 
     def minify?
@@ -75,6 +83,8 @@ module PBDev
 
       #  build_mode::        The build mode to use when combining resources.
       @build_mode = opts[:build_mode]
+
+      @build_kind = opts[:build_kind]
 
       @use_digest_tokens = opts[:use_digest_tokens] || (@build_mode == :production)
       

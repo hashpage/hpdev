@@ -39,6 +39,22 @@ get '/skins/:author/:name' do
   erb :skins3
 end
 
+get '/engine/*' do
+  begin
+    resource_path = File.join(workspace, "engine")
+    checkout = EngineCheckout.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/engine")
+  rescue NoSuchPathError
+    throw :halt, [404, 'file not found']
+  end
+  
+  path = params["splat"][0]
+  file_path = checkout.serve(path, :development)
+  
+  return send_file(file_path, {
+    :disposition => 'inline'
+  })
+end
+
 get '/:kind/:author/:name/*' do
   path = params["splat"][0]
   name = params[:name] # e.g. pbw.tabs
@@ -71,7 +87,6 @@ get '/:kind/:author/:name/*' do
       resource_path = File.join(workspace, kind, author, name)
       checkout = klass.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
     rescue NoSuchPathError
-      puts "Resource is missing: #{resource_path}"
       throw :halt, [404, 'file not found']
     end
   end

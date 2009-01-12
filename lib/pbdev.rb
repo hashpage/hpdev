@@ -34,5 +34,6 @@ require 'pbdev/checkout.rb'
 require 'pbdev/repo.rb'
 require 'pbdev/widget.rb'
 require 'pbdev/skin.rb'
+require 'pbdev/engine.rb'
 
 PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))

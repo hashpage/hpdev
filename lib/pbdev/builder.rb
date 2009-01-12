@@ -133,6 +133,11 @@ module PBDev
     def filename_for_require(ret)
       filenames.include?("#{ret}.css") ? "#{ret}.css" : "#{ret}.sass"
     end
+    
+    def _target()
+      return "" if bundle.build_kind==:engine 
+      ".widgets['\#{WIDGET_URL}'].prototype"
+    end
   end
 
   class JavaScriptResourceBuilder < ResourceBuilder
@@ -159,7 +164,7 @@ module PBDev
 
       result = ""
       result << "\n\n/* " << "baked css files" << " ----------------------------------------------------- */\n\n"
-      result << "PB.widgets['__WIDGET_URL__'].prototype.css = '\\\n"
+      result << "PB#{_target}.css = '\\\n"
       result << escapejs(res)
       result << "';\n\n"
       result
@@ -185,7 +190,7 @@ module PBDev
       result = []
       result << "\n\n/* " << filename << " ----------------------------------------------------- */\n\n"
       sanitized_name = File.basename(filename, ".tpl").gsub(/[\*\. -!&^\(\)\[\]]/, "_")
-      result << "PB.widgets['__WIDGET_URL__'].prototype.templates['#{sanitized_name}'] = '\\\n"
+      result << "PB#{_target}.templates['#{sanitized_name}'] = '\\\n"
       lines.each do |line|
         line.strip! if bundle.minify?
         result << escapejs(line)
@@ -206,10 +211,12 @@ module PBDev
       else
         res = lines.join
       end
+      
+      
 
       result = ""
       result << "\n\n/* " << "baked html files" << " ----------------------------------------------------- */\n\n"
-      result << "PB.widgets['__WIDGET_URL__'].prototype.html = '\\\n"
+      result << "PB#{_target}.html = '\\\n"
       result << escapejs(res)
       result << "';\n\n"
       result
