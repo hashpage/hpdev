@@ -37,6 +37,13 @@ module PBDev
           File.unlink(file)
         end
       end
+      
+      remove_empty_directories(dir)
+    end
+    
+    def remove_empty_directories(dir)
+      raise "paranoia" if dir.size<10
+      `find "#{dir}" -depth -empty -type d -exec rmdir {} \\;`
     end
 
   end
