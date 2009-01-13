@@ -8,12 +8,9 @@ rescue LoadError
   require 'pbdev'
 end
 
-include PBDev
-workspace = File.expand_path(ENV["PBDEV_WORKSPACE"] || ".")
-mode = (ENV["PBDEV_MODE"] || "development").to_sym
+require 'pbdev-server-init'
 
-$stderr.puts "PageBout dev server in  #{workspace} (#{mode}) ..."
-$stderr.puts " -> http://localhost:9876"
+include PBDev
 
 get '/' do
   erb :index
@@ -45,14 +42,14 @@ end
 
 get '/engine/*' do
   begin
-    resource_path = File.join(workspace, "engine")
-    checkout = EngineCheckout.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/engine")
+    resource_path = File.join($workspace, "engine")
+    checkout = EngineCheckout.new(resource_path, File.join($workspace, "temp"), "http://localhost:9876/engine")
   rescue NoSuchPathError
     throw :halt, [404, 'file not found']
   end
   
   path = params["splat"][0]
-  file_path = checkout.serve(path, mode)
+  file_path = checkout.serve(path, $mode)
   
   return send_file(file_path, {
     :disposition => 'inline'
@@ -61,14 +58,14 @@ end
 
 get '/editor/*' do
   begin
-    resource_path = File.join(workspace, "editor")
-    checkout = EditorCheckout.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/editor")
+    resource_path = File.join($workspace, "editor")
+    checkout = EditorCheckout.new(resource_path, File.join($workspace, "temp"), "http://localhost:9876/editor")
   rescue NoSuchPathError
     throw :halt, [404, 'file not found']
   end
   
   path = params["splat"][0]
-  file_path = checkout.serve(path, mode)
+  file_path = checkout.serve(path, $mode)
   
   return send_file(file_path, {
     :disposition => 'inline'
@@ -93,8 +90,8 @@ get '/:kind/:author/:name/*' do
   end
 
   begin 
-    resource_path = File.join(workspace, kind, author, name)
-    checkout = klass.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
+    resource_path = File.join($workspace, kind, author, name)
+    checkout = klass.new(resource_path, File.join($workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
   rescue NoSuchPathError
     if name.index("-") then
       # try without prefix
@@ -104,14 +101,14 @@ get '/:kind/:author/:name/*' do
       name = prefix + "-" + name
     end
     begin
-      resource_path = File.join(workspace, kind, author, name)
-      checkout = klass.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
+      resource_path = File.join($workspace, kind, author, name)
+      checkout = klass.new(resource_path, File.join($workspace, "temp"), "http://localhost:9876/#{kind}/#{author}/#{name}")
     rescue NoSuchPathError
       throw :halt, [404, 'file not found']
     end
   end
   begin
-    file_path = checkout.serve(path, mode)
+    file_path = checkout.serve(path, $mode)
   rescue IntermediateFileError
     throw :halt, [404, 'Requested intermediate resource. This resource won\'t be present on production. See index.js instead.']
   rescue ResourceNotFoundError

@@ -44,7 +44,7 @@ end
 
 case cmd
   when "serve"
-    workspace = File.expand_path(opts[:workspace] || ".")
+    workspace = opts[:workspace] || "."
     mode = opts[:mode] || "development"
     `env PBDEV_WORKSPACE="#{workspace}" PBDEV_MODE="#{mode}" ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
   when "bake"
