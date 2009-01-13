@@ -9,12 +9,9 @@ module PBDev
       # bake index.js
       filename = wc.serve("index.js", :production)
       
+      remove_intermediate(dir)
+      
       Dir.chdir(dir) do
-        # remove all intermediate files
-        `rm *.js`
-        `rm *.css`
-        `rm *.tpl`
-        `rm *.html`
         # move baked file in
         `mv "#{filename}" index.js`
 

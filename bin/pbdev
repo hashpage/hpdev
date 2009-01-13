@@ -14,11 +14,13 @@ end
 include PBDev
 
 SUB_COMMANDS = %w(bake, serve)
-global_opts = Trollop::options do
+opts = Trollop::options do
   banner "PageBout developer tools"
   version "pbdev v0.1 (c) 2009 Antonin Hildebrand"
   stop_on SUB_COMMANDS
   opt :url, "destination url to be written into resource", :type => String
+  opt :workspace, "workspace root for dev server", :type => String
+  opt :mode, "server mode (development, production)", :type => String
 end
 
 cmd = ARGV.shift # get the subcommand
@@ -29,28 +31,24 @@ cmd_opts = case cmd
     case subcmd
       when "skin"
       when "widget"
+      when "engine"
+      when "editor"
     else
       Trollop::die "Unknown subcommand for bake. Specify skin or widget"
     end
-  when "serve"
-    Trollop::options do
-      opt :workspace, "workspace root for dev server", :type => String
-    end
 end
 
-# puts "Global options: #{global_opts.inspect}"
+# puts "Options: #{opts.inspect}"
 # puts "Subcommand: #{cmd.inspect}"
-# puts "Subcommand options: #{cmd_opts.inspect}"
 # puts "Remaining arguments: #{ARGV.inspect}"
 
 case cmd
   when "serve"
-    workspace = File.expand_path(cmd_opts[:workspace] || ".")
-    puts "PageBout dev server in  #{workspace} ..."
-    puts " -> http://localhost:9876"
-    `env PBDEV_WORKSPACE=#{workspace} ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
+    workspace = File.expand_path(opts[:workspace] || ".")
+    mode = opts[:mode] || "development"
+    `env PBDEV_WORKSPACE="#{workspace}" PBDEV_MODE="#{mode}" ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
   when "bake"
-    url = global_opts[:url] || "http://examle.com"
+    url = opts[:url] || "http://examle.com"
     source = File.expand_path(ARGV[0] || '.')
     dest = File.expand_path(ARGV[1] || '.')
     case subcmd
@@ -58,6 +56,10 @@ case cmd
         klass = SkinRepo
       when "widget" 
         klass = WidgetRepo
+      when "engine" 
+        klass = EngineRepo
+      when "editor" 
+        klass = EditorRepo
     end
     begin
       resource = klass.new(source, url)

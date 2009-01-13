@@ -22,13 +22,21 @@ module PBDev
       FileUtils.makedirs(File.dirname(filename))
       @repo.archive_to_file(version, nil, filename, "zip", "| cat")
       outdir = File.join(File.dirname(filename), version)
-      `unzip "#{filename}" -d "#{outdir}"`
+      `unzip -o "#{filename}" -d "#{outdir}"`
       `rm "#{filename}"`
       outdir
     end
     
     def postprocess(dir)
       dir
+    end
+    
+    def remove_intermediate(dir)
+      ["js", "css", "tpl", "html"].each do |ext|
+        Dir.glob(File.join(dir, "**/*.#{ext}")) do |file|
+          File.unlink(file)
+        end
+      end
     end
 
   end

@@ -1,5 +1,27 @@
 module PBDev
   
+  class EditorRepo < Repo
+    def postprocess(dir)
+      url = @url+"/"+@version
+      tempdir = File.join(dir, ".temp")
+      wc = EditorCheckout.new(dir, tempdir, url)
+      
+      filename = wc.serve("editor.js", :production)
+      
+      remove_intermediate(dir)
+      
+      Dir.chdir(dir) do
+        # move baked file in
+        `mv "#{filename}" editor.js`
+
+        # remove temp
+        `rm -rf .temp`
+      end
+      
+      dir
+    end
+  end
+
   class EditorCheckout < Checkout
     def serve(path, build_mode = :development)
       resource_path = File.join(@path, path)

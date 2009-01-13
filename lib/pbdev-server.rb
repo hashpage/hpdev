@@ -9,7 +9,11 @@ rescue LoadError
 end
 
 include PBDev
-workspace = ENV["PBDEV_WORKSPACE"]
+workspace = File.expand_path(ENV["PBDEV_WORKSPACE"] || ".")
+mode = (ENV["PBDEV_MODE"] || "development").to_sym
+
+$stderr.puts "PageBout dev server in  #{workspace} (#{mode}) ..."
+$stderr.puts " -> http://localhost:9876"
 
 get '/' do
   erb :index
@@ -48,7 +52,7 @@ get '/engine/*' do
   end
   
   path = params["splat"][0]
-  file_path = checkout.serve(path, :development)
+  file_path = checkout.serve(path, mode)
   
   return send_file(file_path, {
     :disposition => 'inline'
@@ -64,7 +68,7 @@ get '/editor/*' do
   end
   
   path = params["splat"][0]
-  file_path = checkout.serve(path, :development)
+  file_path = checkout.serve(path, mode)
   
   return send_file(file_path, {
     :disposition => 'inline'
@@ -107,7 +111,7 @@ get '/:kind/:author/:name/*' do
     end
   end
   begin
-    file_path = checkout.serve(path)
+    file_path = checkout.serve(path, mode)
   rescue IntermediateFileError
     throw :halt, [404, 'Requested intermediate resource. This resource won\'t be present on production. See index.js instead.']
   rescue ResourceNotFoundError
