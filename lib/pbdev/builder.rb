@@ -135,8 +135,14 @@ module PBDev
     end
     
     def _target()
-      return "" if bundle.build_kind==:engine 
-      ".widgets['\#{WIDGET_URL}'].prototype"
+      case bundle.build_kind
+        when :widget
+          return "PB.widgets['\#{WIDGET_URL}'].prototype"
+        when :engine
+          return "PB"
+        when :editor
+          return "PB.e"
+      end
     end
   end
 
@@ -164,7 +170,7 @@ module PBDev
 
       result = ""
       result << "\n\n/* " << "baked css files" << " ----------------------------------------------------- */\n\n"
-      result << "PB#{_target}.css = '\\\n"
+      result << "#{_target}.css = '\\\n"
       result << escapejs(res)
       result << "';\n\n"
       result
@@ -190,7 +196,7 @@ module PBDev
       result = []
       result << "\n\n/* " << filename << " ----------------------------------------------------- */\n\n"
       sanitized_name = File.basename(filename, ".tpl").gsub(/[\*\. -!&^\(\)\[\]]/, "_")
-      result << "PB#{_target}.templates['#{sanitized_name}'] = '\\\n"
+      result << "#{_target}.templates['#{sanitized_name}'] = '\\\n"
       lines.each do |line|
         line.strip! if bundle.minify?
         result << escapejs(line)
@@ -216,7 +222,7 @@ module PBDev
 
       result = ""
       result << "\n\n/* " << "baked html files" << " ----------------------------------------------------- */\n\n"
-      result << "PB#{_target}.html = '\\\n"
+      result << "#{_target}.html = '\\\n"
       result << escapejs(res)
       result << "';\n\n"
       result

@@ -55,6 +55,22 @@ get '/engine/*' do
   })
 end
 
+get '/editor/*' do
+  begin
+    resource_path = File.join(workspace, "editor")
+    checkout = EditorCheckout.new(resource_path, File.join(workspace, "temp"), "http://localhost:9876/editor")
+  rescue NoSuchPathError
+    throw :halt, [404, 'file not found']
+  end
+  
+  path = params["splat"][0]
+  file_path = checkout.serve(path, :development)
+  
+  return send_file(file_path, {
+    :disposition => 'inline'
+  })
+end
+
 get '/:kind/:author/:name/*' do
   path = params["splat"][0]
   name = params[:name] # e.g. pbw.tabs
