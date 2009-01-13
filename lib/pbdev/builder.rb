@@ -142,6 +142,8 @@ module PBDev
           return "PB"
         when :editor
           return "PB.e"
+        when :system
+          return "PBS"
       end
     end
   end
@@ -217,8 +219,6 @@ module PBDev
       else
         res = lines.join
       end
-      
-      
 
       result = ""
       result << "\n\n/* " << "baked html files" << " ----------------------------------------------------- */\n\n"
