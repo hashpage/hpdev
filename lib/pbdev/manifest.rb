@@ -111,7 +111,6 @@ module PBDev
 
     def catalog_entries
       entries = {}
-
       Dir.chdir(bundle.source_root) do
         Dir.glob(File.join('**','*')).each do |src_path|
           next if (src_type = type_of(src_path)) == :skip
@@ -263,7 +262,7 @@ module PBDev
   # bundle:: the owner bundle for this entry
   #
   class ManifestEntry
-    attr_accessor :filename, :ext, :source_path, :url, :build_path, :type, :original_path, :hidden, :use_source_directly, :use_digest_tokens, :current_url
+    attr_accessor :filename, :ext, :source_path, :url, :build_path, :type, :original_path, :hidden, :use_source_directly, :use_digest_tokens, :current_url, :fresh
 
     def to_hash
       ret = {}

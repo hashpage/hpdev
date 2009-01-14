@@ -2,13 +2,46 @@ require 'rubygems'
 require 'fileutils'
 require 'grit/lib/grit.rb'
 
+OSX = PLATFORM =~ /darwin/
+WIN = PLATFORM =~ /win32/
+NIX = !(OSX || WIN)
+
+# http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
+begin
+  require 'Win32/Console/ANSI' if WIN
+rescue LoadError
+  raise 'Run "gem install win32console" to use terminal colors on Windows'
+end
+
+def colorize(text, color_code)
+  "#{color_code}#{text}\e[0m"
+end
+
+def red(text); colorize(text, "\e[31m"); end
+def green(text); colorize(text, "\e[32m"); end
+def yellow(text); colorize(text, "\e[33m"); end
+def blue(text); colorize(text, "\e[34m"); end
+def magenta(text); colorize(text, "\e[35m"); end
+def azure(text); colorize(text, "\e[36m"); end
+def white(text); colorize(text, "\e[37m"); end
+def black(text); colorize(text, "\e[30m"); end
+
+def die(s)
+  $stderr.puts red(s)
+  exit(1)
+end
+
 class Loggerx
   def debug(s)
-    $stderr.puts s
+    #$stderr.puts yellow(s)
+  end
+
+  def info(s)
+    $stderr.puts blue(s)
   end
 
   def fatal(s)
-    $stderr.puts s
+    $stderr.puts red(s)
   end
 end
 

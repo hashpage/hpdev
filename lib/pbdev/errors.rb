@@ -9,4 +9,7 @@ module PBDev
   class ResourceNotFoundError < StandardError
   end
 
+  class YUICompressorError < StandardError
+  end
+
 end

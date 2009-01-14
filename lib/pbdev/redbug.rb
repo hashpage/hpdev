@@ -23,36 +23,32 @@ module PBDev
   end
 
   class RedbugCheckout < Checkout
-    def serve(path, build_mode = :development)
+    def prepare_bundle()
+      @bundle1 = Bundle.new("1", {
+        :source_root => File.join(@path, "redbox"),
+        :build_mode => @mode,
+        :build_root => temp("1"),
+        :build_kind => :redbug
+      })
+      @bundle2 = Bundle.new("2", {
+        :source_root => File.join(@path, "redcode"),
+        :build_mode => @mode,
+        :build_root => temp("2"),
+        :build_kind => :redbug
+      })
+    end
+    
+    def serve(path)
       resource_path = File.join(@path, path)
       return resource_path unless path=="redbug.js" || path=="redcode.js"
       
       case path
       when "redbug.js"
-        bundle = Bundle.new(path, {
-          :source_root => File.join(@path, "redbox"),
-          :build_mode => build_mode,
-          :build_root => temp(path),
-          :build_kind => :redbug
-        })
+        bundle = @bundle1
       when "redcode.js"
-        bundle = Bundle.new(path, {
-          :source_root => File.join(@path, "redcode"),
-          :build_mode => build_mode,
-          :build_root => temp(path),
-          :build_kind => :redbug
-        })
+        bundle = @bundle2
       end
-      bundle.build()
-      results = []
-      %w(js css).each do |ext|
-        baked = bundle.entry_for("baked_index.#{ext}")
-        next unless baked
-        results << baked.build_path
-      end
-      final = prepare_final(path, *results)
-      minify(final) if bundle.minify?
-      final
+      bakein(path, bundle)
     end
 
     def replace_macros(source)

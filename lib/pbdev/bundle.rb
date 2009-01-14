@@ -221,6 +221,7 @@ module PBDev
         if !opts[:force] && File.exists?(entry.build_path)
           source_mtime = entry.source_path_mtime
           if source_mtime && (File.mtime(entry.build_path) >= source_mtime)
+            entry.fresh = false
             PB.logger.debug("~ Skipping Entry: #{entry.filename} because it has not changed") 
             next
           end
@@ -233,6 +234,7 @@ module PBDev
         else
           PB.logger.debug("~ Building #{entry.type.to_s.capitalize}: #{entry.filename}")
           PBDev.send("build_#{entry.type}".to_sym, entry, self)
+          entry.fresh = true
         end
       end
 

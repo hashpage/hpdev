@@ -24,7 +24,7 @@ module PBDev
   end
   
   class WidgetCheckout < Checkout
-    def serve(path, build_mode = :development)
+    def serve(path)
       ext = File.extname(path)
       basename = File.basename(path, ".js")
       resource_path = File.join(@path, path)
@@ -33,22 +33,7 @@ module PBDev
       return resource_path unless ext==".js" # images and other static files
       # the path is index.js
 
-      bundle = Bundle.new(path, {
-        :source_root => @path,
-        :build_mode => build_mode,
-        :build_root => temp(path),
-        :build_kind => :widget
-      })
-      bundle.build()
-      results = []
-      %w(js css tpl html).each do |ext|
-        baked = bundle.entry_for("baked_index.#{ext}")
-        next unless baked
-        results << baked.build_path
-      end
-      final = prepare_final(path, *results)
-      minify(final) if bundle.minify?
-      final
+      bakein(path)
     end
 
     def replace_macros(source)

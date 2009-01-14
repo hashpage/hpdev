@@ -23,27 +23,12 @@ module PBDev
   end
 
   class EditorCheckout < Checkout
-    def serve(path, build_mode = :development)
+    def serve(path)
       resource_path = File.join(@path, path)
       PB.logger.debug(resource_path)
       return resource_path unless path=="editor.js"
-
-      bundle = Bundle.new(path, {
-        :source_root => @path,
-        :build_mode => build_mode,
-        :build_root => temp(path),
-        :build_kind => :editor
-      })
-      bundle.build()
-      results = []
-      %w(js css tpl html).each do |ext|
-        baked = bundle.entry_for("baked_index.#{ext}")
-        next unless baked
-        results << baked.build_path
-      end
-      final = prepare_final(path, *results)
-      minify(final) if bundle.minify?
-      final
+      
+      bakein(path)
     end
 
     def replace_macros(source)
