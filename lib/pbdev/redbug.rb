@@ -4,20 +4,15 @@ module PBDev
     def postprocess(dir)
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
-      wc = RedbugCheckout.new(dir, tempdir, url)
-      
-      filename = wc.serve("redbug.js", :production)
-      
+      wc = RedbugCheckout.new(@mode, @kind, dir, tempdir, url)
+      filename1 = wc.serve("redbug.js")
+      filename2 = wc.serve("redcode.js")
       remove_intermediate(dir)
-      
       Dir.chdir(dir) do
-        # move baked file in
-        `mv "#{filename}" redbug.js`
-
-        # remove temp
+        `mv "#{filename1}" redbug.js`
+        `mv "#{filename2}" redcode.js`
         `rm -rf .temp`
       end
-      
       dir
     end
   end

@@ -1,9 +1,11 @@
 module PBDev
   
   class Repo
-    def initialize(path, url)
+    def initialize(path, url, mode, kind)
       @repo = Grit::Repo.new(path)
       @url = url
+      @mode = mode
+      @kind = kind
     end
     
     def bake(dest=".")

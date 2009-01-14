@@ -4,21 +4,13 @@ module PBDev
     def postprocess(dir)
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
-      wc = WidgetCheckout.new(dir, tempdir, url)
-      
-      # bake index.js
-      filename = wc.serve("index.js", :production)
-      
+      wc = WidgetCheckout.new(@mode, @kind, dir, tempdir, url)
+      filename = wc.serve("index.js")
       remove_intermediate(dir)
-      
       Dir.chdir(dir) do
-        # move baked file in
         `mv "#{filename}" index.js`
-
-        # remove temp
         `rm -rf .temp`
       end
-      
       dir
     end
   end

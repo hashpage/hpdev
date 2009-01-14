@@ -33,6 +33,8 @@ cmd_opts = case cmd
       when "widget"
       when "engine"
       when "editor"
+      when "system"
+      when "redbug"
     else
       Trollop::die "Unknown subcommand for bake. Specify skin or widget"
     end
@@ -51,18 +53,10 @@ case cmd
     url = opts[:url] || "http://examle.com"
     source = File.expand_path(ARGV[0] || '.')
     dest = File.expand_path(ARGV[1] || '.')
-    case subcmd
-      when "skin" 
-        klass = SkinRepo
-      when "widget" 
-        klass = WidgetRepo
-      when "engine" 
-        klass = EngineRepo
-      when "editor" 
-        klass = EditorRepo
-    end
+    klass = eval("#{subcmd.capitalize}Repo")
+    mode = opts[:mode] || "production"
     begin
-      resource = klass.new(source, url)
+      resource = klass.new(source, url, mode.to_sym, subcmd.to_sym)
     rescue Grit::InvalidGitRepositoryError
       Trollop::die "Error: #{source} is not valid Git repository"
     rescue Grit::NoSuchPathError
