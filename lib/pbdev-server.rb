@@ -147,8 +147,6 @@ get '/:kind/:author/:name/*' do
     throw :halt, [404, 'resource not found']
   end
 
-  #File.read(file_path)
-
   return send_file(file_path, {
     :disposition => 'inline'
   })
