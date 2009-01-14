@@ -88,6 +88,22 @@ get '/system/*' do
   })
 end
 
+get '/redbug/*' do
+  begin
+    resource_path = File.join($workspace, "redbug")
+    checkout = RedbugCheckout.new(resource_path, File.join($workspace, "temp"), "http://localhost:9876/redbug")
+  rescue NoSuchPathError
+    throw :halt, [404, 'file not found']
+  end
+  
+  path = params["splat"][0]
+  file_path = checkout.serve(path, $mode)
+  
+  return send_file(file_path, {
+    :disposition => 'inline'
+  })
+end
+
 get '/:kind/:author/:name/*' do
   path = params["splat"][0]
   name = params[:name] # e.g. pbw.tabs

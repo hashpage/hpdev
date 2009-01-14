@@ -144,6 +144,8 @@ module PBDev
           return "PB.e"
         when :system
           return "PBS"
+        when :redbug
+          return "RB"
       end
     end
   end
