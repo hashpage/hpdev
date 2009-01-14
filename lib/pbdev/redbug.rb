@@ -43,6 +43,7 @@ module PBDev
           :build_kind => :redbug
         })
       end
+      bundle.build()
       results = []
       %w(js css).each do |ext|
         baked = bundle.entry_for("baked_index.#{ext}")

@@ -39,7 +39,7 @@ module PBDev
         :build_root => temp(path),
         :build_kind => :widget
       })
-      #bundle.build()
+      bundle.build()
       results = []
       %w(js css tpl html).each do |ext|
         baked = bundle.entry_for("baked_index.#{ext}")

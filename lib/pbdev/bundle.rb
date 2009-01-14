@@ -204,11 +204,13 @@ module PBDev
 
         # skip if hidden, already seen, or already built (unless forced)
         if entry.hidden? && with_hidden == :none
-          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is hidden") and next
+          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is hidden") 
+          next
         end
 
         if !entry.hidden? && with_hidden == :only
-          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is not hidden") and next
+          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is not hidden") 
+          next
         end
 
         # Nothing interesting to log here.
@@ -219,7 +221,8 @@ module PBDev
         if !opts[:force] && File.exists?(entry.build_path)
           source_mtime = entry.source_path_mtime
           if source_mtime && (File.mtime(entry.build_path) >= source_mtime)
-            PB.logger.debug("~ Skipping Entry: #{entry.filename} because it has not changed") and next
+            PB.logger.debug("~ Skipping Entry: #{entry.filename} because it has not changed") 
+            next
           end
         end
 

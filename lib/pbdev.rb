@@ -4,7 +4,7 @@ require 'grit/lib/grit.rb'
 
 class Loggerx
   def debug(s)
-    puts s
+    $stderr.puts s
   end
 
   def fatal(s)
