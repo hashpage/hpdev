@@ -2,9 +2,11 @@ require 'rubygems'
 require 'fileutils'
 require 'grit/lib/grit.rb'
 
-OSX = PLATFORM =~ /darwin/
-WIN = PLATFORM =~ /win32/
-NIX = !(OSX || WIN)
+unless defined? OSX then
+  OSX = PLATFORM =~ /darwin/
+  WIN = PLATFORM =~ /win32/
+  NIX = !(OSX || WIN)
+end
 
 # http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
 begin

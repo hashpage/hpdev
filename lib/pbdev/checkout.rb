@@ -35,11 +35,11 @@ module PBDev
     
     def final_path(path, *results)
       results = results.reject { |x| x.nil? }
-      base = path
+      base = path.dup
       results.each do |result|
         base << result.gsub(".", "_")
       end
-      final = File.join(temp(base), "result.js")
+      File.join(temp(base), "result.js")
     end
     
     def prepare_final(final, *results)
@@ -58,7 +58,7 @@ module PBDev
       yui_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'yui-compressor'))
       jar_path = File.join(yui_root, 'yuicompressor-2.4.2.jar')
       filecompress = "java -jar \"" + jar_path + "\" --charset utf-8 \"" + path + "\" -o \"" + path + "\""
-      PB.logger.info('Compressing with YUI .... '+ path)
+      PB.logger.info('  crunching with YUI Compressor ...')
       res = `#{filecompress} 2>&1`
       if $?.exitstatus != 0
         PB.logger.fatal("!!!!YUI compressor failed, please check that your js code is valid and doesn't contain reserved statements like debugger;")
