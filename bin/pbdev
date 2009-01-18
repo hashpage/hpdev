@@ -35,14 +35,11 @@ cmd_opts = case cmd
       when "editor"
       when "system"
       when "redbug"
+      when "front"
     else
-      Trollop::die "Unknown subcommand for bake. Specify skin or widget"
+      Trollop::die "Unknown subcommand for bake. Specify skin, widget, engine, editor, system, redbug or front."
     end
 end
-
-# puts "Options: #{opts.inspect}"
-# puts "Subcommand: #{cmd.inspect}"
-# puts "Remaining arguments: #{ARGV.inspect}"
 
 case cmd
   when "serve"

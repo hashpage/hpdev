@@ -15,6 +15,7 @@ module PBDev
       @system_url = url(mode, "code", "system")
       @redbug_url = url(mode, "code", "redbug")
       @editor_url = url(mode, "code", "editor")
+      @front_url = url(mode, "code", "front")
     end
     
     def replace_macros(source, url)
@@ -31,6 +32,7 @@ module PBDev
       res.gsub!("\#{ENGINE_URL}", @engine_url)
       res.gsub!("\#{REDBUG_URL}", @redbug_url)
       res.gsub!("\#{EDITOR_URL}", @editor_url)
+      res.gsub!("\#{FRONT_URL}", @front_url)
       res
     end
 

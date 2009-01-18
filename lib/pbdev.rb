@@ -73,5 +73,6 @@ require 'pbdev/engine.rb'
 require 'pbdev/editor.rb'
 require 'pbdev/system.rb'
 require 'pbdev/redbug.rb'
+require 'pbdev/front.rb'
 
 PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))

@@ -146,6 +146,8 @@ module PBDev
           return "PBS"
         when :redbug
           return "RB"
+        when :front
+          return "FT"
       end
     end
   end
