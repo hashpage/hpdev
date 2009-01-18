@@ -1,5 +1,5 @@
 <%
-  widgets_path = File.join(ENV["PBDEV_WORKSPACE"], "widgets")
+  widgets_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "widgets"))
 %>
 <h2>Widget authors</h2>
 <h3>You have following widget authors on the disk:</h3>

@@ -1,0 +1,20 @@
+<%
+  code_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"]))
+%>
+<h2>Code packages</h2>
+<h3>You have following code packages on the disk:</h3>
+<p class="note">root path is <code><%= code_path %></code></p>
+<ul>
+  <%=
+    res = ""
+    Dir.glob(code_path+"/*").each do |file|
+      next unless File.directory? file
+      package = File.basename(file)
+      next if ['bakery', 'temp', 'widgets', 'skins'].include? package
+      res << "<li><a href=\"/code/#{package}/master\">#{package}</a></li>"
+    end
+    res
+  %>
+</ul>
+
+<p><a href="/">&larr; back to index</a></p>

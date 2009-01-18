@@ -1,5 +1,5 @@
 <%
-  widgets_path = File.join(ENV["PBDEV_WORKSPACE"], "widgets", params[:author], params[:name])
+  widgets_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "widgets", params[:author], params[:name]))
   url = "http://localhost:9876/widgets/#{params[:author]}/#{params[:name]}"
 %>
 <img class="thumbnail" src="<%= params[:name] %>/master/thumbnail.png">

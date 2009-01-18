@@ -41,6 +41,14 @@ get '/skins/:author/:name' do
   erb :skins3
 end
 
+get '/code' do
+  erb :code1
+end
+
+get '/code/:package/master' do
+  erb :code2
+end
+
 get '/code/:package/master/*' do
   path = params["splat"][0]
   package = params[:package]

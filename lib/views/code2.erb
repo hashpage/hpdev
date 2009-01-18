@@ -1,0 +1,10 @@
+<%
+  code_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], params[:package]))
+  url = "http://localhost:9876/code/#{params[:package]}"
+%>
+<h2><%= params[:package] %>/master (package)</h2>
+<p class="homepage">has following URL:</p>
+<p class="url"><a href="<%=url%>/master"><%=url%>/master</a></p>
+<p class="url-note">Use this URL to reference this package in PageBout.</p>
+
+<p><a href="/code">&larr; back to code</a></p>

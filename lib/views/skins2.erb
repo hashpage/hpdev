@@ -1,5 +1,5 @@
 <%
-  skins_path = File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author])
+  skins_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author]))
 %>
 <h2>Skins by <%= params[:author] %></h2>
 <h3>I see following skins on the disk:</h3>
