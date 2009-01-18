@@ -23,9 +23,5 @@ module PBDev
       
       bakein(path)
     end
-
-    def replace_macros(source)
-      source.gsub("\#{EDITOR_URL}", @url)
-    end
   end
 end

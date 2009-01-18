@@ -137,7 +137,7 @@ module PBDev
     def _target()
       case bundle.build_kind
         when :widget
-          return "PB.widgets['\#{WIDGET_URL}'].prototype"
+          return "PB.widgets['\#{BASE_URL}'].prototype"
         when :engine
           return "PB"
         when :editor

@@ -1,6 +1,7 @@
 module PBDev
   
   class SkinRepo < Repo
+
     def postprocess(dir)
       url = @url+"/"+@version
       
@@ -9,15 +10,20 @@ module PBDev
       File.open(index, "w") do |f|
         f << replace_macros(content, url)
       end
+      
+      Dir.glob(File.join(dir, "**/*.css")) do |file|
+        content = File.read(file)
+        File.open(file, "w") do |f|
+          f << replace_macros(content, url)
+        end
+      end
+      
       dir
-    end
-    
-    def replace_macros(source, url)
-      source.gsub("\#{SKIN_URL}", url)
     end
   end
 
   class SkinCheckout < Checkout
+
     def serve(path, build_mode = :development)
       PB.logger.debug(path)
       resource_path = File.join(@path, path)
@@ -28,15 +34,12 @@ module PBDev
 
       final_file = File.join(@temp, "_index.html")
       File.open(final_file, "w") do |f|
-        f << content
+        f << replace_macros(content)
       end
       
       final_file
     end
 
-    def replace_macros(source)
-      source.gsub("\#{SKIN_URL}", @url)
-    end
   end
   
 end

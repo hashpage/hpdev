@@ -1,6 +1,7 @@
 module PBDev
   
   class WidgetRepo < Repo
+
     def postprocess(dir)
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
@@ -24,12 +25,8 @@ module PBDev
       raise IntermediateFileError.new(resource_path) if ext==".tpl" || ext==".html" || ext==".css" || (ext==".js" && basename!="index")
       return resource_path unless ext==".js" # images and other static files
       # the path is index.js
-
       bakein(path)
     end
 
-    def replace_macros(source)
-      source.gsub("\#{WIDGET_URL}", @url)
-    end
   end
 end

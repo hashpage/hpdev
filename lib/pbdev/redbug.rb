@@ -45,10 +45,6 @@ module PBDev
       end
       bakein(path, bundle)
     end
-
-    def replace_macros(source)
-      source.gsub("\#{REDBUG_URL}", @url)
-    end
   end
   
 end

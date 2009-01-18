@@ -1,13 +1,39 @@
 module PBDev
-  
+
   class Repo
+
     def initialize(path, url, mode, kind)
       @repo = Grit::Repo.new(path)
       @url = url
       @mode = mode
       @kind = kind
+
+      @widgets_url = url(mode, "widgets")
+      @skins_url = url(mode, "skins")
+      @code_url = url(mode, "code")
+      @engine_url = url(mode, "code", "engine")
+      @system_url = url(mode, "code", "system")
+      @redbug_url = url(mode, "code", "redbug")
+      @editor_url = url(mode, "code", "editor")
     end
     
+    def replace_macros(source, url)
+      res = replace_urls(source)
+      res = res.gsub("\#{BASE_URL}", url)
+    end
+
+    def replace_urls(source)
+      res = source.dup
+      res.gsub!("\#{WIDGETS_URL}", @widgets_url)
+      res.gsub!("\#{SKINS_URL}", @skins_url)
+      res.gsub!("\#{CODE_URL}", @code_url)
+      res.gsub!("\#{SYSTEM_URL}", @system_url)
+      res.gsub!("\#{ENGINE_URL}", @engine_url)
+      res.gsub!("\#{REDBUG_URL}", @redbug_url)
+      res.gsub!("\#{EDITOR_URL}", @editor_url)
+      res
+    end
+
     def bake(dest=".")
       postprocess(bake_version("master", dest))
       @repo.tags.each do |tag|
@@ -17,8 +43,6 @@ module PBDev
 
     def bake_version(version="master", dest=".")
       @version = version
-      base = File.basename(@repo.working_dir)
-      base = base[4..-1] if base=~/^pb.-/ 
       basename = "#{version}.zip"
       filename = File.join(dest, basename)
       FileUtils.makedirs(File.dirname(filename))
@@ -39,7 +63,6 @@ module PBDev
           File.unlink(file)
         end
       end
-      
       remove_empty_directories(dir)
     end
     

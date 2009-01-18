@@ -41,27 +41,13 @@ get '/skins/:author/:name' do
   erb :skins3
 end
 
-get '/engine/*' do
+get '/code/:package/master/*' do
   path = params["splat"][0]
-  serve("engine", path)
+  package = params[:package]
+  serve(package, path)
 end
 
-get '/editor/*' do
-  path = params["splat"][0]
-  serve("editor", path)
-end
-
-get '/system/*' do
-  path = params["splat"][0]
-  serve("system", path)
-end
-
-get '/redbug/*' do
-  path = params["splat"][0]
-  serve("redbug", path)
-end
-
-get '/:kind/:author/:name/*' do
+get '/:kind/:author/:name/master/*' do
   path = params["splat"][0]
   name = params[:name] # e.g. pbw.tabs
   author = params[:author] # github username e.g. darwin

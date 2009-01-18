@@ -23,9 +23,14 @@ module PBDev
 
       bakein(path)
     end
-
+    
     def replace_macros(source)
-      source.gsub("\#{SYSTEM_URL}", @url)
+      source = super
+      mode = 0
+      mode = 1 if @mode==:development
+      mode = 2 if @mode==:simulation
+      source.gsub("serverMode: 0,", "serverMode: #{mode.to_s},")
     end
+    
   end
 end

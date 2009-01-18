@@ -11,11 +11,37 @@ module PBDev
       @temp = temp
       @url = url
       @kind = kind
+      
+      @widgets_url = url(mode, "widgets")
+      @skins_url = url(mode, "skins")
+      @code_url = url(mode, "code")
+      @engine_url = url(mode, "code", "engine")
+      @system_url = url(mode, "code", "system")
+      @redbug_url = url(mode, "code", "redbug")
+      @editor_url = url(mode, "code", "editor")
+      
       prepare_bundle()
     end
     
+    def replace_macros(source)
+      res = replace_urls(source)
+    end
+    
+    def replace_urls(source)
+      res = source.dup
+      res.gsub!("\#{BASE_URL}", @url)
+      res.gsub!("\#{WIDGETS_URL}", @widgets_url)
+      res.gsub!("\#{SKINS_URL}", @skins_url)
+      res.gsub!("\#{CODE_URL}", @code_url)
+      res.gsub!("\#{SYSTEM_URL}", @system_url)
+      res.gsub!("\#{ENGINE_URL}", @engine_url)
+      res.gsub!("\#{REDBUG_URL}", @redbug_url)
+      res.gsub!("\#{EDITOR_URL}", @editor_url)
+      res
+    end
+    
     def prepare_bundle()
-      @bundle = Bundle.new("xxx", {
+      @bundle = Bundle.new("index", {
         :source_root => @path,
         :build_mode => @mode,
         :build_root => temp(),

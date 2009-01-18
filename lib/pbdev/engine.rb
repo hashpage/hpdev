@@ -1,6 +1,7 @@
 module PBDev
   
   class EngineRepo < Repo
+
     def postprocess(dir)
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
@@ -13,18 +14,26 @@ module PBDev
       end
       dir
     end
+
   end
 
   class EngineCheckout < Checkout
+
     def serve(path)
       resource_path = File.join(@path, path)
       return resource_path unless path=="pagebout.js"
 
       bakein(path)
     end
-
+    
     def replace_macros(source)
-      source.gsub("\#{ENGINE_URL}", @url)
+      source = super
+      mode = 0
+      mode = 1 if @mode==:development
+      mode = 2 if @mode==:simulation
+      source.gsub("serverMode: 0,", "serverMode: #{mode.to_s},")
     end
+    
   end
+  
 end

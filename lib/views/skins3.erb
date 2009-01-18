@@ -2,9 +2,9 @@
   skins_path = File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author], params[:name])
   url = "http://localhost:9876/skins/#{params[:author]}/#{params[:name]}"
 %>
-<h2><%= params[:author] %>/<%= params[:name] %> (skin)</h2>
+<h2><%= params[:author] %>/<%= params[:name] %>/master (skin)</h2>
 <p class="homepage">has following URL:</p>
-<p class="url"><a href="<%=url%>"><%=url%></a></p>
+<p class="url"><a href="<%=url%>/master"><%=url%>/master</a></p>
 <p class="url-note">Use this URL to reference this skin in PageBout.</p>
 
 <h3>I see following content of the skin on the disk:</h3>
@@ -14,7 +14,7 @@
     res = ""
     Dir.glob(skins_path+"/*").each do |file|
       file = File.basename(file)
-      res << "<li><a href=\"/skins/#{params[:author]}/#{params[:name]}/#{file}\">#{file}</a></li>"
+      res << "<li><a href=\"/skins/#{params[:author]}/#{params[:name]}/master/#{file}\">#{file}</a></li>"
     end
     res
   %>

@@ -13,7 +13,7 @@ def produce(checkout, path)
 end
 
 def serve(mod, path)
-  url = "http://localhost:9876/#{mod}"
+  url = "http://localhost:9876/code/#{mod}/master"
   checkout = $cache[url.to_sym]
   unless checkout
     begin
@@ -41,7 +41,7 @@ def serve_widget(path, name, author, kind)
     throw :halt, [404, 'bad resource kind']
   end
 
-  url = "http://localhost:9876/#{kind}/#{author}/#{name}"
+  url = "http://localhost:9876/#{kind}/#{author}/#{name}/master"
   checkout = $cache[url.to_sym]
   unless checkout
     temp = File.join($workspace, "temp")

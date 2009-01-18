@@ -20,7 +20,7 @@ opts = Trollop::options do
   stop_on SUB_COMMANDS
   opt :url, "destination url to be written into resource", :type => String
   opt :workspace, "workspace root for dev server", :type => String
-  opt :mode, "server mode (development, production)", :type => String
+  opt :mode, "server mode (development, production, simulation)", :type => String
 end
 
 cmd = ARGV.shift # get the subcommand
