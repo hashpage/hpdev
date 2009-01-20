@@ -37,6 +37,10 @@ module PBDev
     end
 
     def bake(dest=".")
+      FileUtils.makedirs(dest)
+      File.open(File.join(dest, "description.txt"), "w") do |f|
+        f << @repo.description
+      end
       postprocess(bake_version("master", dest))
       @repo.tags.each do |tag|
         postprocess(bake_version(tag.name, dest))

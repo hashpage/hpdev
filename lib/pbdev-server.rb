@@ -26,6 +26,10 @@ get '/widgets/:author' do
 end
 
 get '/widgets/:author/:name' do
+  redirect "#{params[:name]}/master"
+end
+
+get '/widgets/:author/:name/master' do
   erb :widgets3
 end
 
@@ -38,6 +42,10 @@ get '/skins/:author' do
 end
 
 get '/skins/:author/:name' do
+  redirect "#{params[:name]}/master"
+end
+
+get '/skins/:author/:name/master' do
   erb :skins3
 end
 
