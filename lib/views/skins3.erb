@@ -1,6 +1,6 @@
 <%
   skins_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author], params[:name]))
-  url = "http://localhost:9876/skins/#{params[:author]}/#{params[:name]}"
+  url = "#{$server_url}/skins/#{params[:author]}/#{params[:name]}"
 %>
 <h2><%= params[:author] %>/<%= params[:name] %>/master (skin)</h2>
 <p class="homepage">has following URL:</p>

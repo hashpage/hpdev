@@ -1,6 +1,6 @@
 <%
   code_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], params[:package]))
-  url = "http://localhost:9876/code/#{params[:package]}"
+  url = "#{$server_url}/code/#{params[:package]}"
 %>
 <h2><%= params[:package] %>/master (package)</h2>
 <p class="homepage">has following URL:</p>

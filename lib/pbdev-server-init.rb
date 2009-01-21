@@ -1,3 +1,7 @@
+require 'pbdev'
+include PBDev
+
+$server_url = "http://localhost:9876"
 $workspace = File.expand_path(ENV["PBDEV_WORKSPACE"] || ".")
 $mode = (ENV["PBDEV_MODE"] || "development").to_sym
 

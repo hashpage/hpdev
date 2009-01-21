@@ -1,3 +1,5 @@
+PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))
+
 require 'rubygems'
 require 'fileutils'
 require 'grit/lib/grit.rb'
@@ -33,7 +35,7 @@ def die(s)
   exit(1)
 end
 
-class Loggerx
+class PBLogger
   def debug(s)
     #$stderr.puts yellow(s)
   end
@@ -51,7 +53,7 @@ class PBC
   attr :logger
   
   def initialize()
-    @logger = Loggerx.new
+    @logger = PBLogger.new
   end
 end
 
@@ -74,5 +76,3 @@ require 'pbdev/editor.rb'
 require 'pbdev/system.rb'
 require 'pbdev/redbug.rb'
 require 'pbdev/front.rb'
-
-PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))

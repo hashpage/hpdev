@@ -1,17 +1,9 @@
+$: << File.expand_path(File.dirname(__FILE__)) # for local development
+
 require 'rubygems'
 require 'sinatra'
-
-begin
-  require 'pbdev'
-rescue LoadError
-  $: << File.expand_path(File.dirname(__FILE__))
-  require 'pbdev'
-end
-
 require 'pbdev-server-init'
 require 'pbdev-server-helpers'
-
-include PBDev
 
 get '/' do
   erb :index
