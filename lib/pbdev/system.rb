@@ -5,10 +5,12 @@ module PBDev
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = SystemCheckout.new(@mode, @kind, dir, tempdir, url)
-      filename = wc.serve("system.js")
+      js = wc.serve("system.js")
+      css = wc.serve("system.css")
       remove_intermediate(dir)
       Dir.chdir(dir) do
-        `mv "#{filename}" system.js`
+        `mv "#{js}" system.js`
+        `mv "#{css}" system.css`
         `rm -rf .temp`
       end
       dir

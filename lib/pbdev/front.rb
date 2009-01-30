@@ -5,10 +5,12 @@ module PBDev
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = FrontCheckout.new(@mode, @kind, dir, tempdir, url)
-      filename = wc.serve("front.js")
+      js = wc.serve("front.js")
+      css = wc.serve("front.css")
       remove_intermediate(dir)
       Dir.chdir(dir) do
-        `mv "#{filename}" front.js`
+        `mv "#{js}" front.js`
+        `mv "#{css}" front.css`
         `rm -rf .temp`
       end
       dir

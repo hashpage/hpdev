@@ -6,10 +6,12 @@ module PBDev
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = EngineCheckout.new(@mode, @kind, dir, tempdir, url)
-      filename = wc.serve("pagebout.js")
+      js = wc.serve("pagebout.js")
+      css = wc.serve("pagebout.css")
       remove_intermediate(dir)
       Dir.chdir(dir) do
-        `mv "#{filename}" pagebout.js`
+        `mv "#{js}" pagebout.js`
+        `mv "#{css}" pagebout.css`
         `rm -rf .temp`
       end
       dir
