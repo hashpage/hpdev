@@ -19,9 +19,9 @@ module PBDev
     def serve(path)
       resource_path = File.join(@path, path)
       PB.logger.debug(resource_path)
-      return resource_path unless path=="system.js"
-
-      bakein(path)
+      return bakein(path, "js", %w(js tpl html)) if path=="system.js"
+      return bakein(path, "css", %w(css)) if path=="system.css"
+      resource_path
     end
     
     def replace_macros(source)

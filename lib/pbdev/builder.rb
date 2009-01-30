@@ -174,12 +174,16 @@ module PBDev
         res = lines.join
       end
 
-      result = ""
-      result << "\n\n/* " << "baked css files" << " ----------------------------------------------------- */\n\n"
-      result << "#{_target}.css = '\\\n"
-      result << escapejs(res)
-      result << "';\n\n"
-      result
+      if bundle.build_kind==:system || bundle.build_kind==:front || bundle.build_kind==:engine then
+        res
+      else
+        result = ""
+        result << "\n\n/* " << "baked css files" << " ----------------------------------------------------- */\n\n"
+        result << "#{_target}.css = '\\\n"
+        result << escapejs(res)
+        result << "';\n\n"
+        result
+      end
     end
 
     def _process_file_lines(lines, filename)

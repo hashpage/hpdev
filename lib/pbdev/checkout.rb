@@ -61,13 +61,13 @@ module PBDev
       File.join(@temp, digest)
     end
     
-    def final_path(path, *results)
+    def final_path(path, ext, *results)
       results = results.reject { |x| x.nil? }
       base = path.dup
       results.each do |result|
         base << result.gsub(".", "_")
       end
-      File.join(temp(base), "result.js")
+      File.join(temp(base), "result."+ext)
     end
     
     def prepare_final(final, *results)
@@ -98,19 +98,19 @@ module PBDev
       end
     end
     
-    def bakein(path, bundle=nil)
+    def bakein(path, ext="js", what = %w(js css tpl html), bundle=nil)
       bundle = @bundle unless bundle
       bundle.reload!
       results = []
       fresh = []
-      %w(js css tpl html).each do |ext|
+      what.each do |ext|
         baked = bundle.entry_for("baked_index.#{ext}")
         next unless baked
         bundle.build_entry(baked)
         results << baked.build_path
         fresh << baked.fresh
       end
-      final_path = final_path(path, *results)
+      final_path = final_path(path, ext, *results)
       if File.exists?(final_path) && !(fresh.any? {|x| x }) then
         PB.logger.debug("~ Skipping Entry: #{final_path} because it has not changed") 
         return final_path 
@@ -120,7 +120,6 @@ module PBDev
       minify(final_path) if bundle.minify?
       final_path
     end
-
   end
   
 end
