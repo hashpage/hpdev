@@ -88,6 +88,7 @@ module PBDev
       jar_path = File.join(yui_root, 'yuicompressor-2.4.2.jar')
       filecompress = "java -jar \"" + jar_path + "\" --charset utf-8 \"" + path + "\" -o \"" + path + "\""
       PB.logger.info('  crunching with YUI Compressor ...')
+      # puts "> "+yellow(filecompress)
       res = `#{filecompress} 2>&1`
       if $?.exitstatus != 0
         PB.logger.fatal("!!!!YUI compressor failed, please check that your js code is valid and doesn't contain reserved statements like debugger;")
@@ -104,8 +105,8 @@ module PBDev
       bundle.reload!
       results = []
       fresh = []
-      what.each do |ext|
-        baked = bundle.entry_for("baked_index.#{ext}")
+      what.each do |x|
+        baked = bundle.entry_for("baked_index.#{x}")
         next unless baked
         bundle.build_entry(baked)
         results << baked.build_path
