@@ -43,7 +43,7 @@ module PBDev
       when "redcode.js"
         bundle = @bundle2
       end
-      bakein(path, bundle)
+      bakein(path, "js", %w(js css), "", bundle)
     end
   end
   

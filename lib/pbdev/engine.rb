@@ -21,9 +21,9 @@ module PBDev
 
     def serve(path)
       resource_path = File.join(@path, path)
-      return resource_path unless path=="pagebout.js"
-
-      bakein(path)
+      return bakein(path, "js", %w(tpl html js), "PB = { templates:{} };") if path=="pagebout.js"
+      return bakein(path, "css", %w(css)) if path=="pagebout.css"
+      resource_path
     end
     
     def replace_macros(source)

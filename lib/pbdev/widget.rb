@@ -25,7 +25,7 @@ module PBDev
       raise IntermediateFileError.new(resource_path) if ext==".tpl" || ext==".html" || ext==".css" || (ext==".js" && basename!="index")
       return resource_path unless ext==".js" # images and other static files
       # the path is index.js
-      bakein(path)
+      bakein(path, "js", %w(js tpl css html)) # here must go js first
     end
 
   end

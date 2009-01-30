@@ -20,8 +20,7 @@ module PBDev
       resource_path = File.join(@path, path)
       PB.logger.debug(resource_path)
       return resource_path unless path=="editor.js"
-      
-      bakein(path)
+      bakein(path, "js", %w(tpl html css js), "PB.e={templates:{}};")
     end
   end
 end

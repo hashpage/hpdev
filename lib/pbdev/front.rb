@@ -19,7 +19,7 @@ module PBDev
     def serve(path)
       resource_path = File.join(@path, path)
       PB.logger.debug(resource_path)
-      return bakein(path, "js", %w(js tpl html)) if path=="front.js"
+      return bakein(path, "js", %w(tpl html js), "window.FT = { templates:{} };") if path=="front.js"
       return bakein(path, "css", %w(css)) if path=="front.css"
       resource_path
     end

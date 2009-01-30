@@ -70,10 +70,11 @@ module PBDev
       File.join(temp(base), "result."+ext)
     end
     
-    def prepare_final(final, *results)
+    def prepare_final(final, prolog, *results)
       results = results.reject { |x| x.nil? }
       FileUtils.makedirs(File.dirname(final))
       File.open(final, "w") do |f|
+        f << prolog
         results.each do |result|
           content = File.read(result)
           f << replace_macros(content) + "\n"
@@ -98,7 +99,7 @@ module PBDev
       end
     end
     
-    def bakein(path, ext="js", what = %w(js css tpl html), bundle=nil)
+    def bakein(path, ext="js", what = %w(tpl html css js), prolog="", bundle=nil)
       bundle = @bundle unless bundle
       bundle.reload!
       results = []
@@ -116,7 +117,7 @@ module PBDev
         return final_path 
       end
       PB.logger.info("Baking #{@url}/#{path} ...")
-      prepare_final(final_path, *results)
+      prepare_final(final_path, prolog, *results)
       minify(final_path) if bundle.minify?
       final_path
     end
