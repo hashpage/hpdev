@@ -45,7 +45,7 @@ case cmd
   when "serve"
     workspace = opts[:workspace] || "."
     mode = opts[:mode] || "development"
-    `env PBDEV_WORKSPACE="#{workspace}" PBDEV_MODE="#{mode}" ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876`
+    `env PBDEV_WORKSPACE="#{workspace}" PBDEV_MODE="#{mode}" ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876 1>&2`
   when "bake"
     url = opts[:url] || "http://examle.com"
     source = File.expand_path(ARGV[0] || '.')

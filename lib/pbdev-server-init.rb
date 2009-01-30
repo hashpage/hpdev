@@ -9,8 +9,8 @@ $mode = (ENV["PBDEV_MODE"] || "development").to_sym
 die("Error: '#{$workspace}' is not valid PageBout workspace") unless File.exists?($workspace) && File.directory?($workspace)
 die("Error: '#{$mode}' is not recognized mode. Use production or development.") unless $mode==:development || $mode==:production
 
-$stderr.puts blue("Pagebout")+" dev server in  #{yellow($workspace)} (#{magenta($mode)}) ..."
+puts blue("Pagebout")+" dev server in  "+yellow($workspace.to_s)+" ("+magenta($mode.to_s)+") ..."
 # clear temp directory
 temp = File.join($workspace, "temp")
 `rm -rf "#{temp}"`
-$stderr.puts " -> " + green("http://localhost:9876")
+puts " -> " + green("http://localhost:9876")
