@@ -134,6 +134,11 @@ module PBDev
       filenames.include?("#{ret}.css") ? "#{ret}.css" : "#{ret}.sass"
     end
     
+    def comment_out_js_line(line)
+      m = line.match(/(\s*)(.*)/)
+      m[1]+"//"+m[2]+"\n"
+    end
+    
     def _target()
       case bundle.build_kind
         when :widget
@@ -153,10 +158,25 @@ module PBDev
   end
 
   class JavaScriptResourceBuilder < ResourceBuilder
+    
+    def initialize(filenames, bundle)
+      super
+      @dbg = false
+    end
+    
+    def remove_checks?
+      @bundle.build_mode==:production
+    end
 
     def rewrite_inline_code(line, filename)
-      if line.match(/sc_super\(\s*\)/)
-        line = line.gsub(/sc_super\(\s*\)/, 'arguments.callee.base.apply(this,arguments)')
+      if line.match(/^\/\/#dbg/)
+        @dbg = !@dbg
+      end
+      if line.match(/^(.+)\/\/#dbg/)
+        line = comment_out_js_line(line) unless @dbg
+      end
+      if remove_checks? and line.match(/\/\/#chk/)
+        line = comment_out_js_line(line)
       end
       super(line, filename)
     end
