@@ -39,11 +39,10 @@ module PBDev
       
       case path
       when "redbug.js"
-        bundle = @bundle1
+        bakein(path, "js", %w(css js), "window.RB={};", @bundle1)
       when "redcode.js"
-        bundle = @bundle2
+        bakein(path, "js", %w(css js), "window.RB={};", @bundle2)
       end
-      bakein(path, "js", %w(js css), "", bundle)
     end
   end
   

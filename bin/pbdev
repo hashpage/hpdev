@@ -59,7 +59,11 @@ case cmd
     rescue Grit::NoSuchPathError
       Trollop::die "Error: no such path #{source}"
     end
-    resource.bake(dest)
+    begin
+      resource.bake(dest)
+    rescue Exception
+      Trollop::die "Error: "+$!
+    end
     puts "Resource baked into #{dest}"
 end
 
