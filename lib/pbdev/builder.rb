@@ -161,7 +161,7 @@ module PBDev
     
     def initialize(filenames, bundle)
       super
-      @dbg = false
+      @switches = {}
     end
     
     def remove_checks?
@@ -170,10 +170,10 @@ module PBDev
 
     def rewrite_inline_code(line, filename)
       if line.match(/^\/\/#dbg/)
-        @dbg = !@dbg
+        @switches[filename] = !(@switches[filename])
       end
       if line.match(/^(.+)\/\/#dbg/)
-        line = comment_out_js_line(line) unless @dbg
+        line = comment_out_js_line(line) unless @switches[filename]
       end
       if remove_checks? and line.match(/\/\/#chk/)
         line = comment_out_js_line(line)
