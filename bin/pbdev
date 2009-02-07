@@ -62,7 +62,7 @@ case cmd
     begin
       resource.bake(dest)
     rescue Exception
-      Trollop::die "Error: "+$!
+      Trollop::die $!
     end
     puts "Resource baked into #{dest}"
 end

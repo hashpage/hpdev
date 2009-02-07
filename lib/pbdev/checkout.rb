@@ -86,7 +86,7 @@ module PBDev
     def minify(path)
       yui_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'yui-compressor'))
       jar_path = File.join(yui_root, 'yuicompressor-2.4.2.jar')
-      filecompress = "java -jar \"" + jar_path + "\" --charset utf-8 \"" + path + "\" -o \"" + path + "\""
+      filecompress = "java -jar \"" + jar_path + "\" --charset utf-8 --line-break 120 \"" + path + "\" -o \"" + path + "\""
       PB.logger.info('  crunching with YUI Compressor ...')
       # puts "> "+yellow(filecompress)
       res = `#{filecompress} 2>&1`

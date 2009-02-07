@@ -2,7 +2,13 @@ PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))
 
 require 'rubygems'
 require 'fileutils'
+begin
+  require 'hpricot'
+rescue
+  raise "Do: sudo gem install hpricot"
+end
 require 'grit/lib/grit.rb'
+#Grit.debug = true
 
 unless defined? OSX then
   OSX = PLATFORM =~ /darwin/

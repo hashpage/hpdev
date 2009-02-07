@@ -35,11 +35,61 @@ module PBDev
       res.gsub!("\#{FRONT_URL}", @front_url)
       res
     end
+    
+    def collect_meta()
+      res = @repo.git.remote({}, "show", "origin")
+      unless res =~ /URL: (.*)$/
+        raise RepoError.new("unable to retrieve origin/master in #{@repo.path}")
+      end
+      url = $1
+      if url =~ /git@github\.com:([^\/]+)\/([^\/]+)\.git$/
+        return {
+          'description' => "private repo",
+          'tags' => [],
+          'origin' => url,
+          'home' => '?'
+        }
+      end
+      
+      unless url =~ /git:\/\/github\.com\/([^\/]+)\/([^\/]+)\.git$/
+        raise RepoError.new("unable to parse repo url: #{url}")
+      end
+      author = $1
+      project = $2
+      home = "http://github.com/#{author}/#{project}"
+      
+      project_human = project
+      if project_human =~ /pb.-(.*)/
+        project_human = $1
+      end
+      
+      require 'open-uri'
+      PB.logger.info("Fetching: #{home}")
+      doc = open(home) { |f| Hpricot(f) }
+      raise RepoError.new("unable to download: #{home}") unless doc
+      
+      desc = doc.search("//meta[@name='description']")[0]['content']
+      raise RepoError.new("unable to parse description in #{doc}") unless desc
+
+      tags = [author, project_human]
+      if desc =~ /(.*)\[(.*)\]$/
+        desc = $1
+        tags = $2.split(',').map{|t| t.strip }
+      end
+      
+      { 
+        'description' => desc,
+        'tags' => tags,
+        'origin' => url,
+        'home' => home
+      }
+    end
 
     def bake(dest=".")
       FileUtils.makedirs(dest)
-      File.open(File.join(dest, "description.txt"), "w") do |f|
-        f << @repo.description
+      meta = collect_meta
+      File.open(File.join(dest, "meta.yaml"), "w") do |f|
+        f << meta.to_yaml
       end
       postprocess(bake_version("master", dest))
       @repo.tags.each do |tag|

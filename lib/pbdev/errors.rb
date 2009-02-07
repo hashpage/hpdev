@@ -12,4 +12,7 @@ module PBDev
   class YUICompressorError < StandardError
   end
 
+  class RepoError < StandardError
+  end
+
 end
