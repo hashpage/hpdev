@@ -168,12 +168,16 @@ module PBDev
       @bundle.build_mode==:production
     end
 
+    def remove_dbgs?
+      @bundle.build_mode==:production
+    end
+
     def rewrite_inline_code(line, filename)
       if line.match(/^\/\/#dbg/)
         @switches[filename] = !(@switches[filename])
       end
       if line.match(/^(.+)\/\/#dbg/)
-        line = comment_out_js_line(line) unless @switches[filename]
+        line = comment_out_js_line(line) if !@switches[filename] or remove_dbgs?
       end
       if remove_checks? and line.match(/\/\/#chk/)
         line = comment_out_js_line(line)
