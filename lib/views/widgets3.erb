@@ -2,7 +2,7 @@
   widgets_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "widgets", params[:author], params[:name]))
   url = "#{$server_url}/widgets/#{params[:author]}/#{params[:name]}"
 %>
-<img class="thumbnail" src="<%= params[:name] %>/master/thumbnail.png">
+<img class="thumbnail" src="<%= params[:name] %>/master/icon.png">
 <h2><%= params[:author] %>/<%= params[:name] %>/master (widget)</h2>
 <p class="homepage">has following URL:</p>
 <p class="url"><a href="<%=url+"/master"%>"><%=url+"/master"%></a></p>

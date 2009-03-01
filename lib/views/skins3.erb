@@ -2,6 +2,7 @@
   skins_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author], params[:name]))
   url = "#{$server_url}/skins/#{params[:author]}/#{params[:name]}"
 %>
+<img class="thumbnail" src="<%= params[:name] %>/master/icon.png">
 <h2><%= params[:author] %>/<%= params[:name] %>/master (skin)</h2>
 <p class="homepage">has following URL:</p>
 <p class="url"><a href="<%=url%>/master"><%=url%>/master</a></p>
