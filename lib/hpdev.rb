@@ -7,7 +7,11 @@ begin
 rescue
   raise "Do: sudo gem install hpricot"
 end
-require 'grit'
+begin
+  require 'grit'
+rescue
+  raise "Do: sudo gem install grit"
+end
 #Grit.debug = true
 
 unless defined? OSX then
@@ -37,7 +41,7 @@ def die(s)
   exit(1)
 end
 
-class PBLogger
+class HPLogger
   def debug(s)
     #puts yellow(s)
   end
@@ -51,15 +55,15 @@ class PBLogger
   end
 end
 
-class PBC
+class HPC
   attr :logger
   
   def initialize()
-    @logger = PBLogger.new
+    @logger = HPLogger.new
   end
 end
 
-PB = PBC.new
+HP = HPC.new
 
 require 'hpdev/utils.rb'
 

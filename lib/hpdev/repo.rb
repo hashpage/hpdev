@@ -64,7 +64,7 @@ module HPDev
       end
       
       require 'open-uri'
-      PB.logger.info("Fetching: #{home}")
+      HP.logger.info("Fetching: #{home}")
       doc = open(home) { |f| Hpricot(f) }
       raise RepoError.new("unable to download: #{home}") unless doc
       

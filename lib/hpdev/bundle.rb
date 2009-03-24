@@ -204,12 +204,12 @@ module HPDev
 
         # skip if hidden, already seen, or already built (unless forced)
         if entry.hidden? && with_hidden == :none
-          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is hidden") 
+          HP.logger.debug("~ Skipping Entry: #{entry.filename} because it is hidden") 
           next
         end
 
         if !entry.hidden? && with_hidden == :only
-          PB.logger.debug("~ Skipping Entry: #{entry.filename} because it is not hidden") 
+          HP.logger.debug("~ Skipping Entry: #{entry.filename} because it is not hidden") 
           next
         end
 
@@ -222,7 +222,7 @@ module HPDev
           source_mtime = entry.source_path_mtime
           if source_mtime && (File.mtime(entry.build_path) >= source_mtime)
             entry.fresh = false
-            PB.logger.debug("~ Skipping Entry: #{entry.filename} because it has not changed") 
+            HP.logger.debug("~ Skipping Entry: #{entry.filename} because it has not changed") 
             next
           end
         end
@@ -230,9 +230,9 @@ module HPDev
         # OK, looks like this is ready to be built.
         # if the entry is served directly from source
         if entry.use_source_directly?
-          PB.logger.debug("~ No Build Required: #{entry.filename} (will be served directly)")
+          HP.logger.debug("~ No Build Required: #{entry.filename} (will be served directly)")
         else
-          PB.logger.debug("~ Building #{entry.type.to_s.capitalize}: #{entry.filename}")
+          HP.logger.debug("~ Building #{entry.type.to_s.capitalize}: #{entry.filename}")
           HPDev.send("build_#{entry.type}".to_sym, entry, self)
           entry.fresh = true
         end
@@ -249,9 +249,9 @@ module HPDev
 
     # This will perform a complete build
     def build()
-      PB.logger.debug("~ Build Mode:  #{build_mode}")
-      PB.logger.debug("~ Source Root: #{source_root}")
-      PB.logger.debug("~ Build Root:  #{build_root}")
+      HP.logger.debug("~ Build Mode:  #{build_mode}")
+      HP.logger.debug("~ Source Root: #{source_root}")
+      HP.logger.debug("~ Build Root:  #{build_root}")
       build_entries(entries())
     end
 

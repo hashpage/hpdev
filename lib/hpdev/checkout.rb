@@ -87,13 +87,13 @@ module HPDev
       yui_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'yui-compressor'))
       jar_path = File.join(yui_root, 'yuicompressor-2.4.2.jar')
       filecompress = "java -jar \"" + jar_path + "\" --charset utf-8 --line-break 120 \"" + path + "\" -o \"" + path + "\""
-      PB.logger.info('  crunching with YUI Compressor ...')
+      HP.logger.info('  crunching with YUI Compressor ...')
       # puts "> "+yellow(filecompress)
       res = `#{filecompress} 2>&1`
       if $?.exitstatus != 0
-        PB.logger.fatal("!!!!YUI compressor failed, please check that your js code is valid and doesn't contain reserved statements like debugger;")
-        PB.logger.fatal("!!!!Failed compressing ... "+ path)
-        PB.logger.fatal(res)
+        HP.logger.fatal("!!!!YUI compressor failed, please check that your js code is valid and doesn't contain reserved statements like debugger;")
+        HP.logger.fatal("!!!!Failed compressing ... "+ path)
+        HP.logger.fatal(res)
         failed_path = File.join(File.dirname(path), "failed_"+File.basename(path))
         `mv "#{path}" "#{failed_path}"`
         raise YUICompressorError.new(failed_path + "\n\n" + res)
@@ -114,10 +114,10 @@ module HPDev
       end
       final_path = final_path(path, ext, *results)
       if File.exists?(final_path) && !(fresh.any? {|x| x }) then
-        PB.logger.debug("~ Skipping Entry: #{final_path} because it has not changed") 
+        HP.logger.debug("~ Skipping Entry: #{final_path} because it has not changed") 
         return final_path 
       end
-      PB.logger.info("Baking #{@url}/#{path} ...")
+      HP.logger.info("Baking #{@url}/#{path} ...")
       prepare_final(final_path, prolog, *results)
       minify(final_path) if bundle.minify?
       final_path

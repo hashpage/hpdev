@@ -57,7 +57,7 @@ end
 
 get '/:kind/:author/:name/master/*' do
   path = params["splat"][0]
-  name = params[:name] # e.g. pbw.tabs
+  name = params[:name] # e.g. hpw.tabs
   author = params[:author] # github username e.g. darwin
   kind = params[:kind] # e.g. widgets or skins
   serve_widget(path, name, author, kind)

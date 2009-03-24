@@ -100,7 +100,7 @@ module HPDev
         lines << filename
       elsif file_lines.size > 0
 #        if entry.ext == "sass"
-#          PB.logger.fatal("TODO sass")
+#          HP.logger.fatal("TODO sass")
 #          #           file_lines = [ HPDev::Renderers::Sass.compile(entry, file_lines.join()) ]
 #        end
         lines += _process_file_lines(file_lines, filename)
@@ -142,11 +142,11 @@ module HPDev
     def _target()
       case bundle.build_kind
         when :widget
-          return "PB.widgets['\#{BASE_URL}'].prototype"
+          return "HP.widgets['\#{BASE_URL}'].prototype"
         when :engine
           return "PB"
         when :editor
-          return "PB.e"
+          return "HP.e"
         when :system
           return "PBS"
         when :redbug

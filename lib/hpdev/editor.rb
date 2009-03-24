@@ -18,9 +18,9 @@ module HPDev
   class EditorCheckout < Checkout
     def serve(path)
       resource_path = File.join(@path, path)
-      PB.logger.debug(resource_path)
+      HP.logger.debug(resource_path)
       return resource_path unless path=="editor.js"
-      bakein(path, "js", %w(tpl html css js), "PB.e={templates:{}};")
+      bakein(path, "js", %w(tpl html css js), "HP.e={templates:{}};")
     end
   end
 end

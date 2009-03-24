@@ -25,7 +25,7 @@ module HPDev
   class SkinCheckout < Checkout
 
     def serve(path, build_mode = :development)
-      PB.logger.debug(path)
+      HP.logger.debug(path)
       resource_path = File.join(@path, path)
       return resource_path unless path=="index.html" 
       # the path is index.html
