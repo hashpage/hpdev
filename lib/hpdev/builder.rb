@@ -144,11 +144,11 @@ module HPDev
         when :widget
           return "HP.widgets['\#{BASE_URL}'].prototype"
         when :engine
-          return "PB"
+          return "HP"
         when :editor
           return "HP.e"
         when :system
-          return "PBS"
+          return "HPS"
         when :redbug
           return "RB"
         when :front

@@ -8,7 +8,7 @@ rescue
   raise "Do: sudo gem install hpricot"
 end
 begin
-  require 'grit'
+  require 'grit/lib/grit.rb'
 rescue
   raise "Do: sudo gem install grit"
 end

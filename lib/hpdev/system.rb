@@ -21,7 +21,7 @@ module HPDev
     def serve(path)
       resource_path = File.join(@path, path)
       HP.logger.debug(resource_path)
-      return bakein(path, "js", %w(tpl html js), "PBS.templates={};") if path=="system.js"
+      return bakein(path, "js", %w(tpl html js), "HPS.templates={};") if path=="system.js"
       return bakein(path, "css", %w(css)) if path=="system.css"
       resource_path
     end

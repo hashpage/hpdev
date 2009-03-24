@@ -102,7 +102,7 @@ module HPDev
       basename = "#{version}.zip"
       filename = File.join(dest, basename)
       FileUtils.makedirs(File.dirname(filename))
-      @repo.archive_to_file(version, nil, filename, "zip", "| cat")
+      @repo.archive_to_file(version, nil, filename, "zip", "cat")
       outdir = File.join(File.dirname(filename), version)
       `unzip -o "#{filename}" -d "#{outdir}"`
       `rm "#{filename}"`

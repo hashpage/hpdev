@@ -23,7 +23,7 @@ module HPDev
 
     def serve(path)
       resource_path = File.join(@path, path)
-      return bakein(path, "js", %w(tpl html js), "PB = { templates:{} };") if path=="hashpage.js"
+      return bakein(path, "js", %w(tpl html js), "HP = { templates:{} };") if path=="hashpage.js"
       return bakein(path, "css", %w(css)) if path=="hashpage.css"
       resource_path
     end
