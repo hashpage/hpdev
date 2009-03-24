@@ -8,7 +8,7 @@
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
 
-module PBDev
+module HPDev
 
   # The ResourceBuilder can combine all of the source files listed in the 
   # passed entry including some basic pre-processing.  The JavaScriptBuilder 
@@ -101,7 +101,7 @@ module PBDev
       elsif file_lines.size > 0
 #        if entry.ext == "sass"
 #          PB.logger.fatal("TODO sass")
-#          #           file_lines = [ PBDev::Renderers::Sass.compile(entry, file_lines.join()) ]
+#          #           file_lines = [ HPDev::Renderers::Sass.compile(entry, file_lines.join()) ]
 #        end
         lines += _process_file_lines(file_lines, filename)
       end
@@ -193,7 +193,7 @@ module PBDev
 
     def join(lines)
       if bundle.minify?
-        res = PBDev::CSSPacker.new.compress(lines.join)
+        res = HPDev::CSSPacker.new.compress(lines.join)
       else
         res = lines.join
       end

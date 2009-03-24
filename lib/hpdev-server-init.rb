@@ -1,5 +1,5 @@
 require 'hpdev'
-include PBDev
+include HPDev
 
 $server_url = "http://localhost:9876"
 $workspace = File.expand_path(ENV["HPDEV_WORKSPACE"] || ".")

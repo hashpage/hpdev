@@ -1,6 +1,6 @@
 require 'digest/md5'
 
-module PBDev
+module HPDev
   
   class Checkout
     def initialize(mode, kind, path, temp, url)

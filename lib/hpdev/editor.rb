@@ -1,4 +1,4 @@
-module PBDev
+module HPDev
   
   class EditorRepo < Repo
     def postprocess(dir)

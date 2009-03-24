@@ -11,7 +11,7 @@ rescue LoadError
   require 'hpdev'
 end
 
-include PBDev
+include HPDev
 
 SUB_COMMANDS = %w(bake, serve)
 opts = Trollop::options do

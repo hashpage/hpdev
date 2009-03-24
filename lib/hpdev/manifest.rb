@@ -11,7 +11,7 @@
 require 'yaml'
 require 'digest/md5'
 
-module PBDev
+module HPDev
 
   # A Bundle Manifest describes all of the resources in a bundle, including
   # mapping their source paths, destination paths, and urls.

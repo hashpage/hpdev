@@ -1,4 +1,4 @@
-module PBDev
+module HPDev
   
   class WidgetRepo < Repo
 

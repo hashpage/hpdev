@@ -10,7 +10,7 @@
 
 require 'digest/md5'
 
-module PBDev
+module HPDev
 
   class Bundle
     attr_reader :bundle_name
@@ -233,7 +233,7 @@ module PBDev
           PB.logger.debug("~ No Build Required: #{entry.filename} (will be served directly)")
         else
           PB.logger.debug("~ Building #{entry.type.to_s.capitalize}: #{entry.filename}")
-          PBDev.send("build_#{entry.type}".to_sym, entry, self)
+          HPDev.send("build_#{entry.type}".to_sym, entry, self)
           entry.fresh = true
         end
       end

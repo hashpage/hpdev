@@ -1,4 +1,4 @@
-module PBDev
+module HPDev
   
   class FrontRepo < Repo
     def postprocess(dir)
