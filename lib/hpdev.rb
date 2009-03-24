@@ -7,7 +7,7 @@ begin
 rescue
   raise "Do: sudo gem install hpricot"
 end
-require 'grit/lib/grit.rb'
+require 'grit'
 #Grit.debug = true
 
 unless defined? OSX then
