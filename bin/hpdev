@@ -4,19 +4,19 @@ require 'rubygems'
 require 'trollop'
 
 begin
-  require 'pbdev'
+  require 'hpdev'
 rescue LoadError
-  # special case for my development machine, where I have this file on path and no pbdev gem installed
+  # special case for my development machine, where I have this file on path and no hpdev gem installed
   $: << File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
-  require 'pbdev'
+  require 'hpdev'
 end
 
 include PBDev
 
 SUB_COMMANDS = %w(bake, serve)
 opts = Trollop::options do
-  banner "PageBout developer tools"
-  version "pbdev v0.1 (c) 2009 Antonin Hildebrand"
+  banner "HashPage developer tools"
+  version "hpdev v0.1 (c) 2009 Antonin Hildebrand"
   stop_on SUB_COMMANDS
   opt :url, "destination url to be written into resource", :type => String
   opt :workspace, "workspace root for dev server", :type => String
@@ -45,7 +45,7 @@ case cmd
   when "serve"
     workspace = opts[:workspace] || "."
     mode = opts[:mode] || "development"
-    `env PBDEV_WORKSPACE="#{workspace}" PBDEV_MODE="#{mode}" ruby #{PBDEV_LIB_LOCATION}/pbdev-server.rb -p 9876 1>&2`
+    `env HPDEV_WORKSPACE="#{workspace}" HPDEV_MODE="#{mode}" ruby #{HPDEV_LIB_LOCATION}/hpdev-server.rb -p 9876 1>&2`
   when "bake"
     url = opts[:url] || "http://examle.com"
     source = File.expand_path(ARGV[0] || '.')

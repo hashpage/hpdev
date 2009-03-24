@@ -6,12 +6,12 @@ module PBDev
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = EngineCheckout.new(@mode, @kind, dir, tempdir, url)
-      js = wc.serve("pagebout.js")
-      css = wc.serve("pagebout.css")
+      js = wc.serve("hashpage.js")
+      css = wc.serve("hashpage.css")
       remove_intermediate(dir)
       Dir.chdir(dir) do
-        `mv "#{js}" pagebout.js`
-        `mv "#{css}" pagebout.css`
+        `mv "#{js}" hashpage.js`
+        `mv "#{css}" hashpage.css`
         `rm -rf .temp`
       end
       dir
@@ -23,8 +23,8 @@ module PBDev
 
     def serve(path)
       resource_path = File.join(@path, path)
-      return bakein(path, "js", %w(tpl html js), "PB = { templates:{} };") if path=="pagebout.js"
-      return bakein(path, "css", %w(css)) if path=="pagebout.css"
+      return bakein(path, "js", %w(tpl html js), "PB = { templates:{} };") if path=="hashpage.js"
+      return bakein(path, "css", %w(css)) if path=="hashpage.css"
       resource_path
     end
     

@@ -1,12 +1,12 @@
 <%
-  widgets_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "widgets", params[:author], params[:name]))
+  widgets_path = File.expand_path(File.join(ENV["HPDEV_WORKSPACE"], "widgets", params[:author], params[:name]))
   url = "#{$server_url}/widgets/#{params[:author]}/#{params[:name]}"
 %>
 <img class="thumbnail" src="<%= params[:name] %>/master/icon.png">
 <h2><%= params[:author] %>/<%= params[:name] %>/master (widget)</h2>
 <p class="homepage">has following URL:</p>
 <p class="url"><a href="<%=url+"/master"%>"><%=url+"/master"%></a></p>
-<p class="url-note">Use this URL to reference this widget in PageBout.</p>
+<p class="url-note">Use this URL to reference this widget in HashPage.</p>
 
 <h3>I see following content of the widget on the disk:</h3>
 <p class="note">root path is <code><%= widgets_path %></code></p>

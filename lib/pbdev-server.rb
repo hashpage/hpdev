@@ -2,8 +2,8 @@ $: << File.expand_path(File.dirname(__FILE__)) # for local development
 
 require 'rubygems'
 require 'sinatra'
-require 'pbdev-server-init'
-require 'pbdev-server-helpers'
+require 'hpdev-server-init'
+require 'hpdev-server-helpers'
 
 get '/' do
   erb :index

@@ -1,4 +1,4 @@
-PBDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))
+HPDEV_LIB_LOCATION = File.dirname(File.expand_path(__FILE__))
 
 require 'rubygems'
 require 'fileutils'
@@ -61,20 +61,20 @@ end
 
 PB = PBC.new
 
-require 'pbdev/utils.rb'
+require 'hpdev/utils.rb'
 
-require 'pbdev/cssmin.rb'
-require 'pbdev/manifest.rb'
-require 'pbdev/bundle.rb'
-require 'pbdev/builder.rb'
+require 'hpdev/cssmin.rb'
+require 'hpdev/manifest.rb'
+require 'hpdev/bundle.rb'
+require 'hpdev/builder.rb'
 
-require 'pbdev/errors.rb'
-require 'pbdev/checkout.rb'
-require 'pbdev/repo.rb'
-require 'pbdev/widget.rb'
-require 'pbdev/skin.rb'
-require 'pbdev/engine.rb'
-require 'pbdev/editor.rb'
-require 'pbdev/system.rb'
-require 'pbdev/redbug.rb'
-require 'pbdev/front.rb'
+require 'hpdev/errors.rb'
+require 'hpdev/checkout.rb'
+require 'hpdev/repo.rb'
+require 'hpdev/widget.rb'
+require 'hpdev/skin.rb'
+require 'hpdev/engine.rb'
+require 'hpdev/editor.rb'
+require 'hpdev/system.rb'
+require 'hpdev/redbug.rb'
+require 'hpdev/front.rb'

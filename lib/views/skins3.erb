@@ -1,12 +1,12 @@
 <%
-  skins_path = File.expand_path(File.join(ENV["PBDEV_WORKSPACE"], "skins", params[:author], params[:name]))
+  skins_path = File.expand_path(File.join(ENV["HPDEV_WORKSPACE"], "skins", params[:author], params[:name]))
   url = "#{$server_url}/skins/#{params[:author]}/#{params[:name]}"
 %>
 <img class="thumbnail" src="<%= params[:name] %>/master/icon.png">
 <h2><%= params[:author] %>/<%= params[:name] %>/master (skin)</h2>
 <p class="homepage">has following URL:</p>
 <p class="url"><a href="<%=url%>/master"><%=url%>/master</a></p>
-<p class="url-note">Use this URL to reference this skin in PageBout.</p>
+<p class="url-note">Use this URL to reference this skin in HashPage.</p>
 
 <h3>I see following content of the skin on the disk:</h3>
 <p class="note">root path is <code><%= skins_path %></code></p>

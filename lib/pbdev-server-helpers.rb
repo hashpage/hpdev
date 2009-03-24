@@ -33,10 +33,10 @@ def serve_widget(path, name, author, kind)
   case kind
   when "widgets"
     klass = WidgetCheckout
-    prefix = "pbw"
+    prefix = "hpw"
   when "skins"
     klass = SkinCheckout
-    prefix = "pbs"
+    prefix = "hps"
   else
     throw :halt, [404, 'bad resource kind']
   end

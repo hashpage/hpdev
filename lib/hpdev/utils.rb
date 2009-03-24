@@ -11,9 +11,9 @@ def url(mode, server, path = nil)
   path = "" unless path
   case mode
   when :production
-    return "http://#{server}.pagebout.com/#{path}"
+    return "http://#{server}.hashpage.com/#{path}"
   when :simulation
-    return "http://#{server}.pagebout.local/#{path}"
+    return "http://#{server}.hashpage.local/#{path}"
   when :development
     return "http://localhost:9876/#{server}/#{path}"
   end
