@@ -2,7 +2,7 @@ module HPDev
   
   class SkinRepo < Repo
 
-    def postprocess(dir)
+    def postprocess(dir, meta={})
       url = @url+"/"+@version
       
       index = File.join(dir, "index.html")

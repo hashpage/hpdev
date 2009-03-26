@@ -91,9 +91,9 @@ module HPDev
       File.open(File.join(dest, "meta.yaml"), "w") do |f|
         f << meta.to_yaml
       end
-      postprocess(bake_version("master", dest))
+      postprocess(bake_version("master", dest), meta)
       @repo.tags.each do |tag|
-        postprocess(bake_version(tag.name, dest))
+        postprocess(bake_version(tag.name, dest), meta)
       end
     end
 
@@ -109,7 +109,7 @@ module HPDev
       outdir
     end
     
-    def postprocess(dir)
+    def postprocess(dir, meta={})
       dir
     end
     

@@ -2,7 +2,7 @@ module HPDev
   
   class EngineRepo < Repo
 
-    def postprocess(dir)
+    def postprocess(dir, meta={})
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = EngineCheckout.new(@mode, @kind, dir, tempdir, url)

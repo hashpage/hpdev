@@ -1,12 +1,30 @@
 module HPDev
   
   class WidgetRepo < Repo
+    
+    def bake_info(path, meta) # hack
+      lines = []
+      File.open(path, "r") do |f|
+        f.each do |line|
+          if line =~/HP\.registerWidget\("[^"]*",\{/
+            line = $`+$&+"info:{description:'#{meta['description']}',home:'#{meta['home']}'},"+$'
+          end
+          lines << line
+        end
+      end
+      File.open(path, "w") do |f|
+        f << lines
+      end
+    end
 
-    def postprocess(dir)
+    def postprocess(dir, meta)
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = WidgetCheckout.new(@mode, @kind, dir, tempdir, url)
       filename = wc.serve("index.js")
+
+      bake_info(filename, meta)
+      
       remove_intermediate(dir)
       Dir.chdir(dir) do
         `mv "#{filename}" index.js`

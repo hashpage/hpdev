@@ -1,7 +1,7 @@
 module HPDev
   
   class EditorRepo < Repo
-    def postprocess(dir)
+    def postprocess(dir, meta={})
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = EditorCheckout.new(@mode, @kind, dir, tempdir, url)

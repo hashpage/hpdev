@@ -1,7 +1,7 @@
 module HPDev
   
   class SystemRepo < Repo
-    def postprocess(dir)
+    def postprocess(dir, meta={})
       url = @url+"/"+@version
       tempdir = File.join(dir, ".temp")
       wc = SystemCheckout.new(@mode, @kind, dir, tempdir, url)
