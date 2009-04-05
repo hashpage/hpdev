@@ -59,7 +59,7 @@ module HPDev
       home = "http://github.com/#{author}/#{project}"
       
       project_human = project
-      if project_human =~ /pb.-(.*)/
+      if project_human =~ /hp.-(.*)/
         project_human = $1
       end
       
