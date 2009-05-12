@@ -1,9 +1,19 @@
+require "yaml"
+
 module HPDev
 
   class Repo
 
     def initialize(path, url, mode, kind)
-      @repo = Grit::Repo.new(path)
+      begin
+        @repo = Grit::Repo.new(path)
+        @path = path
+      rescue
+        # widgets and skins are repos no more
+        @repo = nil
+        @path = path
+      end
+
       @url = url
       @mode = mode
       @kind = kind
@@ -36,68 +46,32 @@ module HPDev
       res
     end
     
-    def collect_meta()
-      res = @repo.git.remote({}, "show", "origin")
-      unless res =~ /URL: (.*)$/
-        raise RepoError.new("unable to retrieve origin/master in #{@repo.path}")
-      end
-      url = $1
-      if url =~ /git@github\.com:([^\/]+)\/([^\/]+)\.git$/
-        return {
-          'description' => "private repo",
-          'tags' => [],
-          'origin' => url,
-          'home' => '?'
-        }
-      end
-      
-      unless url =~ /git:\/\/github\.com\/([^\/]+)\/([^\/]+)\.git$/
-        raise RepoError.new("unable to parse repo url: #{url}")
-      end
-      author = $1
-      project = $2
-      home = "http://github.com/#{author}/#{project}"
-      
-      project_human = project
-      if project_human =~ /hp.-(.*)/
-        project_human = $1
-      end
-      
-      require 'open-uri'
-      HP.logger.info("Fetching: #{home}")
-      doc = open(home) { |f| Hpricot(f) }
-      raise RepoError.new("unable to download: #{home}") unless doc
-      
-      desc = doc.search("//meta[@name='description']")[0]['content']
-      raise RepoError.new("unable to parse description in #{doc}") unless desc
-
-      tags = [author, project_human]
-      if desc =~ /(.*)\[(.*)\]$/
-        desc = $1
-        tags = $2.split(',').map{|t| t.strip }
-      end
-      
-      { 
-        'description' => desc,
-        'tags' => tags,
-        'origin' => url,
-        'home' => home
-      }
-    end
-
     def bake(dest=".")
       FileUtils.makedirs(dest)
-      meta = collect_meta
-      File.open(File.join(dest, "meta.yaml"), "w") do |f|
-        f << meta.to_yaml
-      end
-      postprocess(bake_version("master", dest), meta)
-      @repo.tags.each do |tag|
-        postprocess(bake_version(tag.name, dest), meta)
+      meta = {}
+      if @repo then
+        postprocess(bake_version_repo("master", dest), meta)
+        @repo.tags.each do |tag|
+          postprocess(bake_version_repo(tag.name, dest), meta)
+        end
+      else
+        meta_path = File.join(@path, 'meta.yaml')
+        `cp "#{meta_path}" "#{dest}"`
+        meta = YAML::load_file(meta_path)
+        Dir.glob(File.join(@path, "*")) do |version|
+          next unless File.directory? version
+          postprocess(bake_version(version, dest), meta)
+        end
       end
     end
 
-    def bake_version(version="master", dest=".")
+    def bake_version(version, dest=".")
+      `cp -r "#{version}" "#{dest}"`
+      @version = File.basename version
+      File.join(dest, @version)
+    end
+
+    def bake_version_repo(version="master", dest=".")
       @version = version
       basename = "#{version}.zip"
       filename = File.join(dest, basename)
