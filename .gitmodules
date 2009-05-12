@@ -1,3 +1,0 @@
-[submodule "lib/grit"]
-	path = lib/grit
-	url = git://github.com/mojombo/grit.git
