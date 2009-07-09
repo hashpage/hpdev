@@ -29,7 +29,7 @@ def serve(mod, path)
   })
 end
 
-def serve_widget(path, name, author, kind)
+def serve_asset(path, name, author, kind)
   case kind
   when "widgets"
     klass = WidgetCheckout
@@ -46,7 +46,7 @@ def serve_widget(path, name, author, kind)
   unless checkout
     temp = File.join($workspace, "temp")
     begin 
-      resource_path = File.join($workspace, kind, author, name)
+      resource_path = File.join($workspace, kind, author, name, 'master')
       checkout = $cache[url.to_sym] = klass.new($mode, :widget, resource_path, temp, url)
     rescue NoSuchPathError
       if name.index("-") then
@@ -57,7 +57,7 @@ def serve_widget(path, name, author, kind)
         name = prefix + "-" + name
       end
       begin
-        resource_path = File.join($workspace, kind, author, name)
+        resource_path = File.join($workspace, kind, author, name, 'master')
         checkout = $cache[url.to_sym] = klass.new($mode, :widget, resource_path, temp, url)
       rescue NoSuchPathError
         throw :halt, [404, 'file not found']

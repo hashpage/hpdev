@@ -60,5 +60,5 @@ get '/:kind/:author/:name/master/*' do
   name = params[:name] # e.g. hpw.tabs
   author = params[:author] # github username e.g. darwin
   kind = params[:kind] # e.g. widgets or skins
-  serve_widget(path, name, author, kind)
+  serve_asset(path, name, author, kind)
 end
